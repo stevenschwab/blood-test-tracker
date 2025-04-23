@@ -126,3 +126,7 @@ testing.db3
 
 # secrets
 api/secrets/
+
+# client folder’s build artifacts and dependencies are ignored
+/client/node_modules/
+/client/build/
