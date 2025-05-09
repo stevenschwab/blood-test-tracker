@@ -45,7 +45,7 @@ function AuthForm({ onResponse, onError, token }) {
             </div>
             <div>
                 <button onClick={handleSubmit('register')} disabled={!!token}>Register</button>
-                <button onClick={handleSubmit('login')}>Log in</button>
+                <button onClick={handleSubmit('login')} disabled={!!token}>Log in</button>
             </div>
         </form>
     )

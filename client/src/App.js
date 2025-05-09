@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import AuthForm from './components/AuthForm'
-import UserList from './components/UserList'
+import BloodResultsTable from './components/BloodResultsTable'
 
 function App() {
   const [message, setMessage] = useState('')
-  const [users, setUsers] = useState([])
+  const [results, setResults] = useState([])
   const [token, setToken] = useState(localStorage.getItem('token') || '')
 
   const handleResponse = (data) => {
@@ -23,24 +23,24 @@ function App() {
     if (token) {
       setToken('')
       localStorage.removeItem('token')
-      setUsers([])
+      setResults([])
       setMessage('Bye!')
     } else {
       setMessage('Log in before logging out')
     }
   }
 
-  const getUsers = () => {
-    fetch('/api/users', {
+  const getResults = () => {
+    fetch('/api/tests/:userId', {
       headers: token ? { 'Authorization': token } : {}
     })
       .then(res => res.json())
-      .then(users => {
-        if (Array.isArray(users)) {
-          setUsers(users)
+      .then(results => {
+        if (Array.isArray(results)) {
+          setResults(results)
         } else {
-          setMessage(users.message)
-          setUsers([])
+          setMessage(results.message)
+          setResults([])
         }
       })
       .catch(handleError)
@@ -49,10 +49,10 @@ function App() {
   return (
     <div className='App'>
       <AuthForm onResponse={handleResponse} onError={handleError} token={token} />
-      <button onClick={logout}>Logout</button>
+      <button onClick={logout} disabled={!token}>Logout</button>
       <div id='message'>{message}</div>
-      <UserList users={users} />
-      <button onClick={getUsers}>Get Users</button>
+      <BloodResultsTable results={results} />
+      <button onClick={getResults}>Get Results</button>
     </div>
   );
 }
