@@ -4,3 +4,4 @@ A web application to track blood test results, visualize historical data, and pr
 
 ## Setup
 1. Install dependencies: `npm install`
+2. Run the app: `npm run dev`
