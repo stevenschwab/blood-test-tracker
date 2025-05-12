@@ -102,15 +102,32 @@ const formatReferenceInterval = (range) => {
 const formatCategoryName = (key) => {
     return key
         .replace(/([A-Z])/g, ' $1')
-        .replace(/^./, (str) => str.toUpperCase())
+        .replace(/^./, (char) => char.toUpperCase())
         .trim();
 };
 
 function BloodResultsTable({ results }) {
-
     return (
-        <div>Blood tests table goes here</div>
-    )
+        <div>
+            {Object.keys(biomarkers).map((category) => (
+                <div key={category} style={{ marginBottom: '40px' }}>
+                    <h2>{formatCategoryName(category)}</h2>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+                        <thead>
+                            <tr>
+                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Tests</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Results</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Flag</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Units</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Reference Interval</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Lab Number</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            ))}
+        </div>
+    );
 }
 
 export default BloodResultsTable;
