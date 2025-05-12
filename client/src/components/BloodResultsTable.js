@@ -1,5 +1,4 @@
-// The form for registration and login.
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // Reference ranges and biomarker information
 const biomarkers = {
@@ -84,7 +83,16 @@ const biomarkers = {
     ],
 };
 
-function BloodResultsTable() {
+// Function to determine flag (High, Low, Normal)
+const getFlag = (value, range) => {
+    if (!value || !range || range.length < 2) return '';
+    const [min, max] = range;
+    if (value < min) return 'Low';
+    if (value > max) return 'High';
+    return 'Normal';
+};
+
+function BloodResultsTable({ results }) {
 
     return (
         <div>Blood tests table goes here</div>
