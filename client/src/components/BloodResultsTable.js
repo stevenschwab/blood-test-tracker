@@ -98,6 +98,14 @@ const formatReferenceInterval = (range) => {
     return `${range[0]} - ${range[1]}`;
 }
 
+// Function to format test category name
+const formatCategoryName = (key) => {
+    return key
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./, (str) => str.toUpperCase())
+        .trim();
+};
+
 function BloodResultsTable({ results }) {
 
     return (
