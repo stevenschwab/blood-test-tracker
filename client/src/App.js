@@ -51,8 +51,11 @@ function App() {
       <AuthForm onResponse={handleResponse} onError={handleError} token={token} />
       <button onClick={logout} disabled={!token}>Logout</button>
       <div id='message'>{message}</div>
-      <BloodResultsTable results={results} />
-      <button onClick={getResults}>Get Results</button>
+      {token && (
+        <>
+          <BloodResultsTable results={results} />
+        </>
+      )}
     </div>
   );
 }
