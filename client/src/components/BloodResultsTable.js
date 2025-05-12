@@ -85,7 +85,12 @@ const biomarkers = {
 
 // Function to determine flag (High, Low, Normal)
 const getFlag = (value, range) => {
-    if (!value || !range || range.length < 2) return '';
+    if (!value || !range || range.length === 0) return '';
+    if (range.length === 1) {
+        const min = range[0];
+        if (value < min) return 'Low';
+        return 'Normal';
+    }
     const [min, max] = range;
     if (value < min) return 'Low';
     if (value > max) return 'High';
@@ -94,7 +99,8 @@ const getFlag = (value, range) => {
 
 // Function to format reference interval
 const formatReferenceInterval = (range) => {
-    if (!range || range.length < 2) return 'N/A';
+    if (!range || range.length === 0) return 'N/A';
+    if (range.length === 1) return `> ${range[0]}`;
     return `${range[0]} - ${range[1]}`;
 }
 
@@ -123,6 +129,26 @@ function BloodResultsTable({ results }) {
                                 <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Lab Number</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            {biomarkers[category].map((biomarker) => {
+                                // Find the result for this biomarker (assuming results is an array of objects)
+                                const result = results.find((r) => r[biomarker.key] !== undefined) || {};
+                                const value = result[biomarker.key] ?? 'N/A';
+                                const labNumber = result.labNumber ?? 'N/A';
+                                const flag = value !== 'N/A' ? getFlag(value, biomarker.range) : '';
+
+                                return (
+                                    <tr key={biomarker.key}>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{biomarker.name}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{value}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{flag}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{biomarker.unit}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatReferenceInterval(biomarker.range)}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{labNumber}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
                     </table>
                 </div>
             ))}
