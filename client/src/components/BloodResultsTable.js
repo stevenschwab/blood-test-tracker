@@ -167,13 +167,6 @@ function BloodResultsTable({ results }) {
                     </table>
                 </div>
             ))}
-            <style>
-                {`
-                    .info-icon:hover .tooltip {
-                        visibility: visible;
-                    }
-                `}
-            </style>
         </div>
     );
 }
