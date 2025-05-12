@@ -116,7 +116,7 @@ const formatCategoryName = (key) => {
         .trim();
 };
 
-function BloodResultsTable({ results }) {
+function BloodTestResults({ results }) {
     return (
         <div>
             {Object.keys(biomarkers).map((category) => (
@@ -171,4 +171,4 @@ function BloodResultsTable({ results }) {
     );
 }
 
-export default BloodResultsTable;
+export default BloodTestResults;

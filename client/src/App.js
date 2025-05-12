@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import AuthForm from './components/AuthForm'
-import BloodResultsTable from './components/BloodResultsTable'
+import BloodTestResults from './components/BloodTestResults'
 
 function App() {
   const [message, setMessage] = useState('')
@@ -53,7 +53,7 @@ function App() {
       <div id='message'>{message}</div>
       {token && (
         <>
-          <BloodResultsTable results={results} />
+          <BloodTestResults results={results} />
         </>
       )}
     </div>
