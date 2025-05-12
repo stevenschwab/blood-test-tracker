@@ -92,6 +92,12 @@ const getFlag = (value, range) => {
     return 'Normal';
 };
 
+// Function to format reference interval
+const formatReferenceInterval = (range) => {
+    if (!range || range.length < 2) return 'N/A';
+    return `${range[0]} - ${range[1]}`;
+}
+
 function BloodResultsTable({ results }) {
 
     return (
