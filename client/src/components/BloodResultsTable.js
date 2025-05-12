@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import './BloodResultsTable.css';
+
 // Reference ranges and biomarker information
 const biomarkers = {
     completeBloodCount: [
@@ -126,6 +130,7 @@ function BloodResultsTable({ results }) {
                                 <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Flag</th>
                                 <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Units</th>
                                 <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Reference Interval</th>
+                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Info</th>
                                 <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Lab Number</th>
                             </tr>
                         </thead>
@@ -144,6 +149,16 @@ function BloodResultsTable({ results }) {
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>{flag}</td>
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>{biomarker.unit}</td>
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatReferenceInterval(biomarker.range)}</td>
+                                        <td style={{ border: '1px solid #ddd', padding: '8px', position: 'relative' }}>
+                                            {biomarker.info && (
+                                                <span className="info-icon">
+                                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                                    <span className="tooltip">
+                                                        {biomarker.info}
+                                                    </span>
+                                                </span>
+                                            )}
+                                        </td>
                                         <td style={{ border: '1px solid #ddd', padding: '8px' }}>{labNumber}</td>
                                     </tr>
                                 );
@@ -152,6 +167,13 @@ function BloodResultsTable({ results }) {
                     </table>
                 </div>
             ))}
+            <style>
+                {`
+                    .info-icon:hover .tooltip {
+                        visibility: visible;
+                    }
+                `}
+            </style>
         </div>
     );
 }
