@@ -8,34 +8,55 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [manualData, setManualData] = useState({});
   const [token, setToken] = useState(localStorage.getItem('token') || '');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Fetch tests from backend
   useEffect(() => {
-    fetch('/api/tests/:userId', {
-      headers: token ? { 'Authorization': token } : {}
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setTestResults(data)
-        } else {
-          setMessage(data.message)
-          setTestResults([])
+    if (!token) return; // Skip fetch if no token
+
+    const fetchTestResults = async () => {
+      setIsLoading(true); // Set loading state
+      try {
+        const response = await fetch('/api/tests', {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Use Bearer prefix
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-      })
-      .catch(handleError)
-  })
+  
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setTestResults(data);
+          setMessage('Test results loaded successfully');
+        } else {
+          setMessage(data.message || 'No test results found');
+          setTestResults([]);
+        }
+      } catch (error) {
+        setMessage(error.message || 'Failed to fetch test results');
+        setTestResults([]);
+      } finally {
+        setIsLoading(false); // Reset loading state
+      }
+    }
+    
+    fetchTestResults(); // Run when token changes (e.g., after login or logout)
+  }, [token]);
 
   const handleResponse = (data) => {
     setMessage(data.message)
     if (data.token) {
       setToken(data.token)
-      localStorage.setItem('token', data.token)
+      localStorage.setItem('token', data.token);
     }
   }
 
   const handleError = (err) => {
-    setMessage(err.message)
+    setMessage(err.message || 'An error occurred');
   }
 
   const logout = () => {
@@ -52,9 +73,12 @@ function App() {
   return (
     <div className='App'>
       <AuthForm onResponse={handleResponse} onError={handleError} token={token} />
-      <button onClick={logout} disabled={!token}>Logout</button>
+      <button onClick={logout} disabled={!token}>
+        Logout
+      </button>
       <div id='message'>{message}</div>
-      {token && (
+      {isLoading && <div>Loading test results...</div>}
+      {token && !isLoading && (
         <>
           <BloodTestResults results={testResults} />
         </>
