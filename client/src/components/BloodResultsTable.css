@@ -22,6 +22,34 @@
     width: 200px;
     z-index: 1;
     font-size: 12px;
-  }
+}
 
-  
+/* Biomarker category container */
+.biomarker-category {
+    margin-bottom: 40px;
+}
+
+/* Results table */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+/* Table header */
+.table-header {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Table cell */
+.table-cell {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* Info cell (for relative positioning) */
+.table-cell--info {
+    position: relative;
+}

@@ -120,18 +120,18 @@ function BloodTestResults({ results }) {
     return (
         <div>
             {Object.keys(biomarkers).map((category) => (
-                <div key={category} style={{ marginBottom: '40px' }}>
+                <div key={category} className='biomarker-category'>
                     <h2>{formatCategoryName(category)}</h2>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+                    <table className='results-table'>
                         <thead>
                             <tr>
-                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Tests</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Results</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Flag</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Units</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Reference Interval</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Info</th>
-                                <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Lab Number</th>
+                                <th className='table-header'>Tests</th>
+                                <th className='table-header'>Results</th>
+                                <th className='table-header'>Flag</th>
+                                <th className='table-header'>Units</th>
+                                <th className='table-header'>Reference Interval</th>
+                                <th className='table-header'>Info</th>
+                                <th className='table-header'>Lab Number</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -144,12 +144,12 @@ function BloodTestResults({ results }) {
 
                                 return (
                                     <tr key={biomarker.key}>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{biomarker.name}</td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{value}</td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{flag}</td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{biomarker.unit}</td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatReferenceInterval(biomarker.range)}</td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px', position: 'relative' }}>
+                                        <td className='table-cell'>{biomarker.name}</td>
+                                        <td className='table-cell'>{value}</td>
+                                        <td className='table-cell'>{flag}</td>
+                                        <td className='table-cell'>{biomarker.unit}</td>
+                                        <td className='table-cell'>{formatReferenceInterval(biomarker.range)}</td>
+                                        <td className='table-cell table-cell--info'>
                                             {biomarker.info && (
                                                 <span className="info-icon">
                                                     <FontAwesomeIcon icon={faInfoCircle} />
@@ -159,7 +159,7 @@ function BloodTestResults({ results }) {
                                                 </span>
                                             )}
                                         </td>
-                                        <td style={{ border: '1px solid #ddd', padding: '8px' }}>{labNumber}</td>
+                                        <td className='table-cell'>{labNumber}</td>
                                     </tr>
                                 );
                             })}
