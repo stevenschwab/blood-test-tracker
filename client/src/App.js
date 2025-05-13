@@ -1,11 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AuthForm from './components/AuthForm'
 import BloodTestResults from './components/BloodTestResults'
 
 function App() {
-  const [message, setMessage] = useState('')
-  const [testResults, setTestResults] = useState([])
-  const [token, setToken] = useState(localStorage.getItem('token') || '')
+  const [message, setMessage] = useState('');
+  const [testResults, setTestResults] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [manualData, setManualData] = useState({});
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+
+  // Fetch tests from backend
+  useEffect(() => {
+    fetch('/api/tests/:userId', {
+      headers: token ? { 'Authorization': token } : {}
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setTestResults(data)
+        } else {
+          setMessage(data.message)
+          setTestResults([])
+        }
+      })
+      .catch(handleError)
+  })
 
   const handleResponse = (data) => {
     setMessage(data.message)
@@ -23,27 +42,11 @@ function App() {
     if (token) {
       setToken('')
       localStorage.removeItem('token')
-      setResults([])
+      setTestResults([])
       setMessage('Bye!')
     } else {
       setMessage('Log in before logging out')
     }
-  }
-
-  const getResults = () => {
-    fetch('/api/tests/:userId', {
-      headers: token ? { 'Authorization': token } : {}
-    })
-      .then(res => res.json())
-      .then(results => {
-        if (Array.isArray(results)) {
-          setResults(results)
-        } else {
-          setMessage(results.message)
-          setResults([])
-        }
-      })
-      .catch(handleError)
   }
 
   return (
@@ -53,7 +56,7 @@ function App() {
       <div id='message'>{message}</div>
       {token && (
         <>
-          <BloodTestResults results={results} />
+          <BloodTestResults results={testResults} />
         </>
       )}
     </div>
