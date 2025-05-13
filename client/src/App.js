@@ -4,7 +4,7 @@ import BloodTestResults from './components/BloodTestResults'
 
 function App() {
   const [message, setMessage] = useState('')
-  const [results, setResults] = useState([])
+  const [testResults, setTestResults] = useState([])
   const [token, setToken] = useState(localStorage.getItem('token') || '')
 
   const handleResponse = (data) => {
