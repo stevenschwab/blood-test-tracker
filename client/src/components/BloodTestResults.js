@@ -92,12 +92,12 @@ const getFlag = (value, range) => {
     if (!value || !range || range.length === 0) return '';
     if (range.length === 1) {
         const min = range[0];
-        if (value < min) return 'Low';
+        if (value < min) return 'Below Range';
         return 'Normal';
     }
     const [min, max] = range;
-    if (value < min) return 'Low';
-    if (value > max) return 'High';
+    if (value < min) return 'Below Range';
+    if (value > max) return 'Above Range';
     return 'Normal';
 };
 
