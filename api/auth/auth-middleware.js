@@ -3,7 +3,7 @@ const { JWT_SECRET } = require("../secrets");
 const Users = require('../users/users-model');
 
 const restricted = (req, res, next) => {
-  const token = req.headers.authorization
+  const token = req.headers.authorization?.replace(/^Bearer\s/, '');
   if (token) {
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
       if (err) {
