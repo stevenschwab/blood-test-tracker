@@ -7,23 +7,17 @@ const { checkPayload, checkTestId } = require('./tests-middleware.js');
 
 /* Get all test results for a user */
 router.get('/', restricted, (req, res, next) => {
-    const token = req.headers.authorization
-    if (token) {
-        jwt.verify(token, JWT_SECRET, (err, decoded) => {
-            if (err) {
-                next({ status: 401, message: "Token invalid" })
+    const { user_id } = req.decodedJwt;
+
+    Tests.getAllTestsByUserId(user_id)
+        .then(data => {
+            if (data.length) {
+                res.json(data);
             } else {
-                const user_id = decoded.user_id;
-                Tests.getAllTestsByUserId(user_id)
-                    .then(data => {
-                        res.json(data);
-                    })
-                    .catch(next);
+                res.json({ message: "No test results found" })
             }
         })
-    } else {
-        next({ status: 401, message: "No token provided" })
-    }
+        .catch(next);
 });
 
 /* Post test results from form */
