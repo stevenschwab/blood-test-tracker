@@ -86,7 +86,7 @@ exports.up = function(knex) {
         biomarkers.text('biomarker_info')
     })
     .createTable('blood_test_results', blood_test_results => {
-        blood_test_results.increments('result_id').primary()
+        blood_test_results.increments('id').primary()
         blood_test_results.integer('user_id')
             .unsigned()
             .notNullable()
@@ -125,6 +125,7 @@ exports.up = function(knex) {
         blood_test_results.text('final_report_date')
         blood_test_results.text('print_date')
         blood_test_results.text('print_time')
+        blood_test_results.integer('report_id').notNullable()
         blood_test_results.text('report_status_id')
             .unsigned()
             .references('report_status_id')

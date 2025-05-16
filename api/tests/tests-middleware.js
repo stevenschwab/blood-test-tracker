@@ -1,6 +1,6 @@
 const Tests = require('./tests-model');
 
-const checkPayload = (req, res, next) => {
+const checkTestsPayload = (req, res, next) => {
     next()
 }
 
@@ -14,6 +14,6 @@ const checkTestId = async (req, res, next) => {
 }
 
 module.exports = {
-    checkPayload,
+    checkTestsPayload,
     checkTestId,
 }

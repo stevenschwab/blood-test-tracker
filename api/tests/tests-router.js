@@ -3,7 +3,7 @@ const { JWT_SECRET } = require("../secrets");
 const router = require('express').Router();
 const Tests = require('./tests-model.js');
 const { restricted } = require('../auth/auth-middleware.js');
-const { checkPayload, checkTestId } = require('./tests-middleware.js');
+const { checkTestsPayload, checkTestId } = require('./tests-middleware.js');
 
 /* Get all test results for a user */
 router.get('/', restricted, (req, res, next) => {
@@ -21,7 +21,7 @@ router.get('/', restricted, (req, res, next) => {
 });
 
 /* Post test results from form */
-router.post('/', restricted, checkPayload, (req, res, next) => {
+router.post('/', restricted, checkTestsPayload, (req, res, next) => {
     Tests.create(req.body)
         .then(data => {
             res.json(data);
@@ -30,7 +30,7 @@ router.post('/', restricted, checkPayload, (req, res, next) => {
 });
 
 /* Update previously uploaded results */
-router.put('/:id', restricted, checkPayload, checkTestId, (req, res, next) => {
+router.put('/:id', restricted, checkTestsPayload, checkTestId, (req, res, next) => {
     Tests.update(req.body)
         .then(data => {
             res.json(data);
@@ -38,9 +38,9 @@ router.put('/:id', restricted, checkPayload, checkTestId, (req, res, next) => {
         .catch(next)
 });
 
-/* Delete previous test */
-router.delete('/:id', restricted, checkTestId, (req, res, next) => {
-    Tests.removeById(req.params.user_id)
+/* Delete previous whole lab test */
+router.delete('/:report_id', restricted, checkReportId, (req, res, next) => {
+    Tests.removeById(req.params.report_id)
 })
 
 module.exports = router;
