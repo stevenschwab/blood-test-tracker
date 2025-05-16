@@ -1,13 +1,15 @@
 const db = require('../../data/db-config.js');
 
-async function getTestsByUserId(user_id) {
-    return await db('test_results as tr')
+async function getAllTestsByUserId(user_id) {
+    return await db('blood_test_results as btr')
+        .join('biomarkers as b', 'btr.biomarker_id', 'b.biomarker_id')
         .select('*')
-        .where('user_id', user_id)
+        .where('btr.user_id', user_id)
 }
 
 async function getByTestId(test_id) {
     return await db('labs as l')
+        .join('biomarkers as b', 'l.biomarker_id', '')
         .select('*')
         .where('lab_id', test_id)
 }
@@ -25,7 +27,7 @@ async function removeById() {
 }
 
 module.exports = {
-    getTestsByUserId,
+    getAllTestsByUserId,
     getByTestId,
     create,
     update,

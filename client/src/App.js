@@ -8,7 +8,7 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [manualData, setManualData] = useState({});
   const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New loading state
 
   // Fetch tests from backend
   useEffect(() => {

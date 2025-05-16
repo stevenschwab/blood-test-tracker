@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require("../secrets");
 const router = require('express').Router();
 const Tests = require('./tests-model.js');
 const { restricted } = require('../auth/auth-middleware.js');
@@ -5,11 +7,23 @@ const { checkPayload, checkTestId } = require('./tests-middleware.js');
 
 /* Get all test results for a user */
 router.get('/', restricted, (req, res, next) => {
-    Tests.getTestsByUserId(req.params.user_id)
-        .then(data => {
-            res.json(data);
+    const token = req.headers.authorization
+    if (token) {
+        jwt.verify(token, JWT_SECRET, (err, decoded) => {
+            if (err) {
+                next({ status: 401, message: "Token invalid" })
+            } else {
+                const user_id = decoded.user_id;
+                Tests.getAllTestsByUserId(user_id)
+                    .then(data => {
+                        res.json(data);
+                    })
+                    .catch(next);
+            }
         })
-        .catch(next);
+    } else {
+        next({ status: 401, message: "No token provided" })
+    }
 });
 
 /* Post test results from form */
