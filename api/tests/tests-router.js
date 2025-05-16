@@ -35,9 +35,11 @@ router.get('/:report_id', restricted, checkReportId, (req, res, next) => {
 
 /* Post test results from blood tests form: http post :9000/api/tests */
 router.post('/', restricted, checkTestsPayload, (req, res, next) => {
-    Tests.create(req.body)
-        .then(data => {
-            res.json(data);
+    const { user_id } = req.decodedJwt;
+
+    Tests.create(user_id, req.body)
+        .then(result => {
+            res.status(201).json(result);
         })
         .catch(next)
 });

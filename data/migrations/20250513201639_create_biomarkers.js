@@ -78,7 +78,6 @@ exports.up = function(knex) {
         biomarkers.text('biomarker_range')
         biomarkers.integer('biomarker_unit_id')
             .unsigned()
-            .notNullable()
             .references('unit_id')
             .inTable('biomarker_units')
             .onUpdate('RESTRICT')

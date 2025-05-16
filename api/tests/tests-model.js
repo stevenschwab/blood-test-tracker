@@ -14,8 +14,13 @@ async function getByTestId(test_id) {
         .where('lab_id', test_id)
 }
 
-async function create() {
-    return 'create test'
+async function create(user_id, request_body) {
+    return await db('test_results')
+        .insert({
+            user_id,
+            ...request_body
+        })
+        .returning('*')
 }
 
 async function update() {
