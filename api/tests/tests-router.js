@@ -20,7 +20,20 @@ router.get('/', restricted, (req, res, next) => {
         .catch(next);
 });
 
-/* Post test results from form */
+/* Get a single blood test result for a user: http get :9000/api/tests/7 */
+router.get('/:report_id', restricted, checkReportId, (req, res, next) => {
+    Tests.getByTestId(req.params.report_id)
+        .then(data => {
+            if (data.length) {
+                res.json(data);
+            } else {
+                res.json({ message: "No test results found" })
+            }
+        })
+        .catch(next);
+})
+
+/* Post test results from blood tests form: http post :9000/api/tests */
 router.post('/', restricted, checkTestsPayload, (req, res, next) => {
     Tests.create(req.body)
         .then(data => {
@@ -29,7 +42,7 @@ router.post('/', restricted, checkTestsPayload, (req, res, next) => {
         .catch(next)
 });
 
-/* Update previously uploaded results */
+/* Update previously uploaded results: http put :9000/api/tests/7 */
 router.put('/:report_id', restricted, checkTestsPayload, checkReportId, (req, res, next) => {
     Tests.update(req.params.report_id, req.body)
         .then(data => {
