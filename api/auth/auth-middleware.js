@@ -45,7 +45,7 @@ const validateRoleName = async (req, res, next) => {
     typeof role_name !== 'string' || 
     !role_name.trim().length
   ) {
-    req.role_name = 'student'
+    req.role_name = 'patient'
     next()
   } else if (role_name.trim() === 'admin') {
     next({ status: 422, message: "Role name can not be admin" })

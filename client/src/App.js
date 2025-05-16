@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+// import HomePage from './components/HomePage';
 import AuthForm from './components/AuthForm';
 import BloodTestResults from './components/BloodTestResults';
 import './App.css';
@@ -205,9 +207,33 @@ function App() {
 
   return (
     <div className='container mx-auto p-4'>
+      <Routes>
+        <Route 
+          path="/login"
+          element={<AuthForm 
+          isRegister={false}
+          onResponse={handleResponse}
+          onError={handleError}
+          token={token} />}
+        />
+        <Route
+          path="/register"
+          element={<AuthForm
+          isRegister={true}
+          onResponse={handleResponse}
+          onError={handleError}
+          token={token} />}
+        />
+        <Route
+          path="/dashboard"
+          element={<div>Dashboard Placeholder</div>} /* Add dashboard */
+        />
+        <Route
+          path="/"
+          element={<div>HomePage Placeholder</div>} /* Add Home Page */
+        />
+      </Routes>
       <h1 className="text-2xl font-bold mb-4">Blood Test Tracker</h1>
-
-      <AuthForm onResponse={handleResponse} onError={handleError} token={token} />
       <button onClick={logout} disabled={!token}>
         Logout
       </button>

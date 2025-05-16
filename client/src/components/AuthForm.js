@@ -1,11 +1,13 @@
 // The form for registration and login.
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 function AuthForm({ onResponse, onError, token, isRegister = false }) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (action) => (e) => {
         e.preventDefault()
@@ -21,7 +23,7 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
             setError('Username must be at least 3 characters');
             return;
         }
-        if (password.length < 6) {
+        if (password.length < 4) {
             setError('Password must be at least 6 characters');
             return;
         }
@@ -41,11 +43,12 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
         })
             .then(res => res.json())
             .then(data => {
-                onResponse(data)
+                onResponse(data);
                 if (data.token) {
-                    setUsername('')
-                    setPassword('')
-                    if (isRegister) setEmail('')
+                    setUsername('');
+                    setPassword('');
+                    if (isRegister) setEmail('');
+                    navigate('/dashboard');
                 }
             })
             .catch(onError)
@@ -111,12 +114,12 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
             </form>
             <p className="mt-4 text-center text-sm text-gray-600">
                 {isRegister ? 'Already have an account?' : 'Don’t have an account?'}{' '}
-                <a
-                    href={isRegister ? '/login' : '/register'}
+                <Link
+                    to={isRegister ? '/login' : '/register'}
                     className="text-blue-600 hover:underline"
                 >
                     {isRegister ? 'Sign in' : 'Sign up'}
-                </a>
+                </Link>
             </p>
         </div>
     )
