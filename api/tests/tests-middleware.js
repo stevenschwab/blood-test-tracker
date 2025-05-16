@@ -4,7 +4,7 @@ const checkTestsPayload = (req, res, next) => {
     next()
 }
 
-const checkTestId = async (req, res, next) => {
+const checkReportId = async (req, res, next) => {
     const [test] = await Tests.getByTestId({ test_id: req.body.test_id })
     if (test) {
         next()
@@ -15,5 +15,5 @@ const checkTestId = async (req, res, next) => {
 
 module.exports = {
     checkTestsPayload,
-    checkTestId,
+    checkReportId,
 }
