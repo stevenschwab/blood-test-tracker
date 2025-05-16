@@ -30,8 +30,8 @@ router.post('/', restricted, checkTestsPayload, (req, res, next) => {
 });
 
 /* Update previously uploaded results */
-router.put('/:id', restricted, checkTestsPayload, checkReportId, (req, res, next) => {
-    Tests.update(req.body)
+router.put('/:report_id', restricted, checkTestsPayload, checkReportId, (req, res, next) => {
+    Tests.update(req.params.report_id, req.body)
         .then(data => {
             res.json(data);
         })
