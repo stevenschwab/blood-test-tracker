@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import AuthForm from './components/AuthForm';
 import BloodTestResults from './components/BloodTestResults';
+import Dashboard from './components/Dashboard';
 import './App.css';
 
 // Reference ranges and biomarker information
@@ -89,49 +90,8 @@ const biomarkers = {
 };
 
 function App() {
-  const [message, setMessage] = useState('');
-  const [testResults, setTestResults] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [manualData, setManualData] = useState({});
   const [token, setToken] = useState(localStorage.getItem('token') || '');
-  const [isLoading, setIsLoading] = useState(false); // New loading state
-
-  // Fetch tests from backend
-  useEffect(() => {
-    if (!token) return; // Skip fetch if no token
-
-    const fetchTestResults = async () => {
-      setIsLoading(true); // Set loading state
-      try {
-        const response = await fetch('/api/tests', {
-          headers: {
-            'Authorization': `Bearer ${token}`, // Use Bearer prefix
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-  
-        const data = await response.json();
-
-        if (Array.isArray(data)) {
-          setTestResults(data);
-          setMessage('Test results loaded successfully');
-        } else {
-          setMessage(data.message || 'No test results found');
-          setTestResults([]);
-        }
-      } catch (error) {
-        setMessage(error.message || 'Failed to fetch test results');
-        setTestResults([]);
-      } finally {
-        setIsLoading(false); // Reset loading state
-      }
-    }
-    
-    fetchTestResults(); // Run when token changes (e.g., after login or logout)
-  }, [token]);
+  const [message, setMessage] = useState('');
 
   const handleResponse = (data) => {
     setMessage(data.message)
@@ -141,151 +101,47 @@ function App() {
     }
   };
 
+  // Handle an error
   const handleError = (err) => {
     setMessage(err.message || 'An error occurred');
-  };
-
-  const logout = () => {
-    if (token) {
-      setToken('')
-      localStorage.removeItem('token')
-      setTestResults([])
-      setMessage('Bye!')
-    } else {
-      setMessage('Log in before logging out')
-    }
-  };
-
-  // Handle manual input change
-  const handleInputChange = (key, value) => {
-    setManualData({ ...manualData, [key]: value });
-  };
-
-  // Render biomarker input fields
-  const renderInputs = (section, items) => (
-    <div className="mb-6">
-      <h3 className="text-lg font-semibold mb-2">{section}</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {items.map(({ name, key, unit }) => (
-          <div key={key} className="flex flex-col">
-            <label className="text-sm font-medium">{name} ({unit})</label>
-            <input
-              type="number"
-              step="0.1"
-              value={manualData[key] || ""}
-              onChange={(e) => handleInputChange(key, e.target.value)}
-              className="border rounded p-2"
-              placeholder="Enter value"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
-  // Submit test data to backend
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (Object.keys(manualData).length === 0) {
-      alert("Please enter or upload some data.");
-      return;
-    }
-
-    fetch('/api/tests', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(manualData),
-    })
-      .then(res => res.json())
-      .then(data => {
-        setTestResults([...testResults, data]);
-        setManualData({});
-        setShowForm(false);
-      })
-      .catch(handleError)
   };
 
   return (
     <div className='container mx-auto p-4'>
       <Routes>
-        <Route path="/" element={<HomePage/>} />
+        <Route
+          path="/"
+          element={<HomePage/>} 
+        />
         <Route 
           path="/login"
           element={<AuthForm 
             isRegister={false}
+            token={token}
+            handleToken={setToken}
             onResponse={handleResponse}
-            onError={handleError}
-            token={token} 
           />}
         />
         <Route
           path="/register"
           element={<AuthForm
             isRegister={true}
+            token={token}
+            handleToken={setToken}
             onResponse={handleResponse}
-            onError={handleError}
-            token={token} 
           />}
         />
         <Route
           path="/dashboard"
-          element={<div>Dashboard Placeholder</div>} /* Add dashboard */
+          element={<Dashboard
+            token={token}
+            handleMessage={setMessage}
+            message={message}
+            handleError={handleError}
+            handleToken={setToken}
+          />}
         />
       </Routes>
-      <button onClick={logout} disabled={!token}>
-        Logout
-      </button>
-      <div id='message'>{message}</div>
-      {isLoading && <div>Loading test results...</div>}
-
-      {/* Upload and Manual Input Section */}
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">Add New Blood Test</h2>
-        <button
-          onClick={() => setShowForm(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Enter Manually
-        </button>
-        <button
-          onClick={() => setShowForm(false)}
-          className="bg-gray-500 text-white px-4 py-2 rounded"
-        >
-          Cancel
-        </button>
-      </div>
-
-      {/* Input Form */}
-      {showForm && (
-        <div className="mb-6 p-4 border rounded">
-          <h2 className="text-xl font-semibold mb-4">Enter Blood Test Data</h2>
-          {Object.entries(biomarkers).map(([section, items]) => (
-            <div key={section}>
-              {renderInputs(section.replace(/([A-Z])/g, ' $1').toUpperCase(), items)}
-            </div>
-          ))}
-          <div className="flex justify-end">
-            <button
-              onClick={handleSubmit}
-              className="bg-green-500 text-white px-4 py-2 rounded mr-2"
-            >
-              Save Test
-            </button>
-            <button
-              onClick={() => setShowForm(false)}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {token && !isLoading && (
-        <>
-          <BloodTestResults results={testResults} />
-        </>
-      )}
     </div>
   );
 }
