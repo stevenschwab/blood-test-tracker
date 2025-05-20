@@ -1,3 +1,111 @@
+/* Import Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Nav header */
 .homePage-container {
-    
+    @apply min-h-screen flex flex-col;
+}
+
+.headerContainer {
+    @apply sticky top-0 z-50 bg-white shadow-sm;
+}
+
+.headerSubContainer {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.headerRow {
+    @apply flex justify-between items-center py-4;
+}
+
+.logoContainer {
+    @apply flex-shrink-0;
+}
+
+.logoH1 {
+    @apply text-2xl font-bold text-blue-600;
+}
+
+.navigationContainer {
+    @apply hidden md:flex space-x-8;
+}
+
+.navLink {
+    @apply text-gray-600 hover:text-blue-600;
+}
+
+.ctaContainer {
+    @apply flex items-center space-x-4;
+}
+
+.signInLink {
+    @apply text-blue-600 hover:underline;
+}
+
+.getStartedLink {
+    @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700;
+}
+
+.mobileMenuButton {
+    @apply text-gray-600 hover:text-blue-600 focus:outline-none;
+}
+
+/* Article section */
+.mainContainer {
+    @apply flex-grow;
+}
+
+.heroSectionContainer {
+    @apply bg-gray-50 py-12 md:py-20;
+}
+
+.heroBlock {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.heroColumn {
+    @apply text-center;
+}
+
+.heroHeader {
+    @apply text-3xl md:text-4xl font-bold text-gray-900;
+}
+
+.heroPara {
+    @apply mt-4 text-lg text-gray-600 max-w-2xl mx-auto;
+}
+
+.heroButtonContainer {
+    @apply mt-6;
+}
+
+.heroButton {
+    @apply bg-blue-600 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-700;
+}
+
+/* Article Content */
+.articleContentContainer {
+    @apply py-12;
+}
+
+.articleContentColumn {
+    @apply max-w-3xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.articleContentHeader {
+    @apply text-2xl font-semibold text-gray-900 mb-4;
+}
+
+.articleContentPara {
+    @apply text-gray-600 mb-4;
+}
+
+.articleContentUL {
+    @apply list-disc list-inside text-gray-600 mb-4;
+}
+
+.articleContentPara {
+    @apply text-gray-600;
 }
