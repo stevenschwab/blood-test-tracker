@@ -16,7 +16,7 @@ const initialManualData = {
     endocrineEvaluation: {},
 }
 
-function Dashboard({ token, handleToken, handleMessage, message, handleError }) {
+function Dashboard({ token, handleToken, handleMessage, message, handleError, biomarkers }) {
     const navigate = useNavigate();
     const [testResults, setTestResults] = useState([]);
     const [showForm, setShowForm] = useState(false);
@@ -170,6 +170,7 @@ function Dashboard({ token, handleToken, handleMessage, message, handleError }) 
                     testDate={testDate}
                     handleTestDate={setTestDate}
                     handleManualData={setManualData}
+                    biomarkers={biomarkers}
                 />
 
                 {/* Historic Test results */}
@@ -178,7 +179,7 @@ function Dashboard({ token, handleToken, handleMessage, message, handleError }) 
                     {isLoading ? (
                         <div className="text-center text-gray-600">Loading test results...</div>
                     ) : testResults.length > 0 ? (
-                        <BloodTestResults results={testResults} />
+                        <BloodTestResults results={testResults} biomarkers={biomarkers} />
                     ) : (
                         <div className="text-center text-gray-600">No test results found. Add a new test above.</div>
                     )}
