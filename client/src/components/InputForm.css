@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Biomarker Input Field Function */
+
+.biomarkerInputFieldContainer {
+    @apply mb-6;
+}
+
+.biomarkerInputHeader {
+    @apply text-lg font-semibold mb-2;
+}
+
+.bioInputItemGrid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+.biomarkerItemContainer {
+    @apply flex flex-col;
+}
+
+.biomarkerItemLabel {
+    @apply text-sm font-medium;
+}
+
+.biomarkerItemInput {
+    @apply border rounded p-2;
+}
+
+/* Input Form */
+.inputFormContainer {
+    @apply bg-white p-6 rounded-lg shadow-md mb-8;
+}
+
+.addNewBloodTestRow {
+    @apply flex justify-between items-center mb-4;
+}
+
+.addNewBloodTestHeader {
+    @apply text-xl font-semibold text-gray-900;
+}
+
+.addNewBloodTestButton {
+    @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700;
+}
+
+.inputFormDateColumn {
+    @apply mb-4;
+}
+
+.inputFormDateLabel {
+    @apply block text-sm font-medium text-gray-700;
+}
+
+.inputFormDateInputField {
+    @apply mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.inputFormButtonContainer {
+    @apply flex justify-end space-x-4;
+}
+
+.inputFormCancelButton {
+    @apply px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400;
+}
+
+.inputFormSaveButton {
+    @apply px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700;
+}
