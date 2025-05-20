@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import AuthForm from './components/AuthForm';
-import BloodTestResults from './components/BloodTestResults';
 import Dashboard from './components/Dashboard';
+import NotFound from './components/NotFound';
 import './App.css';
 
 // Reference ranges and biomarker information
@@ -111,7 +111,9 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<HomePage/>} 
+          element={<HomePage
+            token={token}
+          />} 
         />
         <Route 
           path="/login"
@@ -140,6 +142,10 @@ function App() {
             handleError={handleError}
             handleToken={setToken}
           />}
+        />
+        <Route
+          path="*"
+          element={<NotFound />}
         />
       </Routes>
     </div>

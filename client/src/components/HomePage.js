@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 import './HomePage.css';
 
-function HomePage() {
+function HomePage({ token }) {
     const navigate = useNavigate();
 
     const handleCTAClick = () => {
@@ -29,9 +29,6 @@ function HomePage() {
                             </Link>
                             <Link to="/dashboard" className="navLink">
                                 Dashboard
-                            </Link>
-                            <Link to="/about" className="navLink">
-                                About
                             </Link>
                         </nav>
                         {/* CTAs */}
