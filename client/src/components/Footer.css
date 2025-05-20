@@ -1,0 +1,39 @@
+/* Import Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* General footer */
+.footerContainer {
+    @apply bg-gray-800 text-white py-8;
+}
+
+.footerInsideContainer {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.footerRow {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+}
+
+.footerHeader {
+    @apply text-lg font-semibold mb-4;
+}
+
+.footerPara {
+    @apply text-gray-400;
+}
+
+/* Navigation section */
+.navUl {
+    @apply space-y-2;
+}
+
+.navLink {
+    @apply text-gray-400 hover:text-white;
+}
+
+/* Copyright section */
+.copyrightContainer {
+    @apply mt-8 border-t border-gray-700 pt-4 text-center;
+}
