@@ -29,11 +29,6 @@ function Footer() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to="/about" className="navLink">
-                                    About
-                                </Link>
-                            </li>
-                            <li>
                                 <Link to="/login" className="navLink">
                                     Sign In
                                 </Link>

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import InputForm from './InputForm';
 import BloodTestResults from './BloodTestResults';
 import Footer from './Footer';
+import './Dashboard.css';
 
 const initialManualData = {
     completeBloodCount: {},

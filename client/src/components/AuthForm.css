@@ -1,0 +1,40 @@
+/* Import Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.authFormContainer {
+    @apply max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md;
+}
+
+.authFormHeader {
+    @apply text-2xl font-bold text-center text-gray-800 mb-6;
+}
+
+.labelInputColumn {
+    @apply mb-4;
+}
+
+.inputLabel {
+    @apply block text-sm font-medium text-gray-700;
+}
+
+.inputField {
+    @apply mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+}
+
+.errorPara {
+    @apply text-red-500 text-sm mb-4;
+}
+
+.actionButton {
+    @apply w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+.paraRow {
+    @apply mt-4 text-center text-sm text-gray-600;
+}
+
+.paraLink {
+    @apply text-blue-600 hover:underline;
+}

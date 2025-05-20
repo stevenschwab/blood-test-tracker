@@ -1,6 +1,7 @@
 // The form for registration and login.
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import './AuthForm.css';
 
 function AuthForm({ onResponse, onError, token, isRegister = false }) {
     const [username, setUsername] = useState('');
@@ -56,27 +57,27 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
     }
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+        <div className="authFormContainer">
+            <h2 className="authFormHeader">
                 {isRegister ? 'Register for Biomarker Access' : 'Login to View Biomarkers'}
             </h2>
             <form>
-                <div className="mb-4">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                    Username
-                </label>
-                <input
-                    type='type'
-                    id='username'
-                    placeholder='Enter your username'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+                <div className="labelInputColumn">
+                    <label htmlFor="username" className="inputLabel">
+                        Username
+                    </label>
+                    <input
+                        type='type'
+                        id='username'
+                        placeholder='Enter your username'
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="inputField"
+                    />
                 </div>
                 {isRegister && (
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    <div className="labelInputColumn">
+                        <label htmlFor="email" className="inputLabel">
                             Email
                         </label>
                         <input
@@ -85,12 +86,12 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
                             placeholder='Enter your email'
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="inputField"
                         />
                     </div>
                 )}
-                <div className="mb-4">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <div className="labelInputColumn">
+                    <label htmlFor="password" className="inputLabel">
                         Password
                     </label>
                     <input
@@ -99,25 +100,25 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
                         placeholder='Enter your password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="inputField"
                     />
                 </div>
                 {error && (
-                    <p className="text-red-500 text-sm mb-4">{error}</p>
+                    <p className="errorPara">{error}</p>
                 )}
                 <button
                     onClick={isRegister ? handleSubmit('register') : handleSubmit('login')}
                     disabled={!!token}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="actionButton"
                 >
                     {isRegister ? 'Register' : 'Sign In'}
                 </button>
             </form>
-            <p className="mt-4 text-center text-sm text-gray-600">
+            <p className="paraRow">
                 {isRegister ? 'Already have an account?' : 'Don’t have an account?'}{' '}
                 <Link
                     to={isRegister ? '/login' : '/register'}
-                    className="text-blue-600 hover:underline"
+                    className="paraLink"
                 >
                     {isRegister ? 'Sign in' : 'Sign up'}
                 </Link>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import './BloodResultsTable.css';
+import './BloodTestResults.css';
 
 // Function to determine flag (High, Low, Normal)
 const getFlag = (value, range) => {
