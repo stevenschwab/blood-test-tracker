@@ -33,18 +33,22 @@ function HomePage({ token }) {
                         </nav>
                         {/* CTAs */}
                         <div className="ctaContainer">
-                            <Link
-                                to="/login"
-                                className="signInLink"
-                            >
-                                Sign In
-                            </Link>
-                            <button
-                                onClick={handleCTAClick}
-                                className="getStartedLink"
-                            >
-                                Get Started
-                            </button>
+                            {!token && (
+                                <Link
+                                    to="/login"
+                                    className="signInLink"
+                                >
+                                    Sign In
+                                </Link>
+                            )}
+                            {!token && (
+                                <button
+                                    onClick={handleCTAClick}
+                                    className="getStartedLink"
+                                >
+                                    Get Started
+                                </button>
+                            )}
                         </div>
                         {/* Mobile Menu Button (Hamburger) */}
                         <div className="md:hidden">
