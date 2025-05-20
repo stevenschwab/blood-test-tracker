@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import InputForm from './InputForm';
-import BloodTestResults from './BloodTestResults';
-import Footer from './Footer';
+import InputForm from '../InputForm/InputForm';
+import BloodTestResults from '../BloodTestResults/BloodTestResults';
+import Footer from '../Footer/Footer.js';
 import './Dashboard.css';
 
 const initialManualData = {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import AuthForm from './components/AuthForm';
-import Dashboard from './components/Dashboard';
-import NotFound from './components/NotFound';
+import HomePage from './components/HomePage/HomePage.js';
+import AuthForm from './components/AuthForm/AuthForm.js';
+import Dashboard from './components/Dashboard/Dashboard.js';
+import NotFound from './components/NotFound/NotFound.js';
 import biomarkers from './constants/biomarkers';
 import './App.css';
 
