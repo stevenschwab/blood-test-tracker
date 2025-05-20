@@ -3,3 +3,77 @@
 @tailwind components;
 @tailwind utilities;
 
+.dashboardContainer {
+    @apply min-h-screen bg-gray-50;
+}
+
+/* Nav */
+.navHeader {
+    @apply sticky top-0 z-50 bg-white shadow-sm;
+}
+
+.navHeaderContainer {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.navHeaderRow {
+    @apply flex justify-between items-center py-4;
+}
+
+.navLogoContainer {
+    @apply flex-shrink-0;
+}
+
+.navLogoHeader {
+    @apply text-2xl font-bold text-blue-600;
+}
+
+.logoutButtonContainer {
+    @apply flex items-center space-x-4;
+}
+
+.logoutButton {
+    @apply text-blue-600 hover:underline;
+}
+
+.menuToggleContainer {
+    @apply md:hidden;
+}
+
+.menuToggleButton {
+    @apply text-gray-600 hover:text-blue-600 focus:outline-none;
+}
+
+/* Main content */
+.mainContentContainer {
+    @apply flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+}
+
+.mainContentHeader {
+    @apply text-3xl font-bold text-gray-900 mb-6;
+}
+
+.mainContentSuccessMessagePrefix {
+    @apply mb-4 p-4 rounded-md;
+}
+
+.mainContentSuccess {
+    @apply bg-green-100 text-green-700;
+}
+
+.mainContentError {
+    @apply bg-red-100 text-red-700;
+}
+
+/* Historic test results */
+.historyContainer {
+    @apply bg-white p-6 rounded-lg shadow-md;
+}
+
+.historyContainerHeader {
+    @apply text-xl font-semibold text-gray-900 mb-4;
+}
+
+.historyMessage {
+    @apply text-center text-gray-600;
+}

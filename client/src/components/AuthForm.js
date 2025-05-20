@@ -44,7 +44,6 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 onResponse(data);
                 if (data.token) {
                     setUsername('');
