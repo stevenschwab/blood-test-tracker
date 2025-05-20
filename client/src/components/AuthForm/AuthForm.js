@@ -1,5 +1,5 @@
 // The form for registration and login.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './AuthForm.css';
 
@@ -9,6 +9,13 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (token) {
+            navigate('/dashboard');
+            return;
+        }
+    }, [token])
 
     const handleSubmit = (action) => (e) => {
         e.preventDefault()
