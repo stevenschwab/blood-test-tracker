@@ -95,6 +95,7 @@ function AuthForm({ token, setToken, isRegister }) {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         className="inputField"
+                        required
                     />
                 </div>
                 {isRegister && (
@@ -109,6 +110,7 @@ function AuthForm({ token, setToken, isRegister }) {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="inputField"
+                            required
                         />
                     </div>
                 )}
@@ -123,6 +125,7 @@ function AuthForm({ token, setToken, isRegister }) {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="inputField"
+                        required
                     />
                 </div>
                 {message && (
