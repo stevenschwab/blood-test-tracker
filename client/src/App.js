@@ -19,7 +19,7 @@ function App() {
           />} 
         />
         <Route 
-          path="/login"
+          path="login"
           element={<AuthForm 
             isRegister={false}
             token={token}
@@ -27,7 +27,7 @@ function App() {
           />}
         />
         <Route
-          path="/register"
+          path="register"
           element={<AuthForm
             isRegister={true}
             token={token}
@@ -35,7 +35,7 @@ function App() {
           />}
         />
         <Route
-          path="/dashboard"
+          path="dashboard"
           element={<Dashboard
             token={token}
             setToken={setToken}

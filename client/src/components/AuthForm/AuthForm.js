@@ -1,5 +1,5 @@
-// The form for registration and login.
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import './AuthForm.css';
 
@@ -8,6 +8,8 @@ function AuthForm({ token, setToken, isRegister }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [disabled, setDisabled] = useState(!!token);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,17 +19,35 @@ function AuthForm({ token, setToken, isRegister }) {
         }
     }, [token, navigate]);
 
+    const onError = (err) => {
+        setMessage(err.message || 'An error occurred');
+    };
+
     const onResponse = (data) => {
         setMessage(data.message)
         if (data.token) {
           setToken(data.token)
           localStorage.setItem('token', data.token);
+          setUsername('');
+          setPassword('');
+          if (isRegister) setEmail('');
+          navigate('/dashboard');
         }
     };
 
-    const onError = (err) => {
-        setMessage(err.message || 'An error occurred');
-    };
+    const authenticateUser = (action, credentials) => {
+        setDisabled(true);
+        setIsLoading(true);
+        axios.post(`/api/auth/${action}`, credentials)
+            .then(res => {
+                onResponse(res.data);
+            })
+            .catch(onError)
+            .finally(() => {
+                setIsLoading(false);
+                setDisabled(false);
+            })
+    }
 
     const handleSubmit = (action) => (e) => {
         e.preventDefault()
@@ -35,7 +55,7 @@ function AuthForm({ token, setToken, isRegister }) {
             setMessage('Please fill in all fields');
             return;
         }
-        if (isRegister && !/\S+@\S+\.\S+/.test(email)) {
+        if (isRegister && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             setMessage('Please enter a valid email');
             return;
         }
@@ -44,7 +64,7 @@ function AuthForm({ token, setToken, isRegister }) {
             return;
         }
         if (password.length < 4) {
-            setMessage('Password must be at least 6 characters');
+            setMessage('Password must be at least 4 characters');
             return;
         }
         setMessage('');
@@ -55,22 +75,7 @@ function AuthForm({ token, setToken, isRegister }) {
             ...(isRegister && { email })
         }
 
-        fetch(`/api/auth/${action}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(credentials)
-        })
-            .then(res => res.json())
-            .then(data => {
-                onResponse(data);
-                if (data.token) {
-                    setUsername('');
-                    setPassword('');
-                    if (isRegister) setEmail('');
-                    navigate('/dashboard');
-                }
-            })
-            .catch(onError)
+        authenticateUser(action, credentials);
     };
 
     return (
@@ -125,7 +130,7 @@ function AuthForm({ token, setToken, isRegister }) {
                 )}
                 <button
                     onClick={isRegister ? handleSubmit('register') : handleSubmit('login')}
-                    disabled={!!token}
+                    disabled={disabled}
                     className="actionButton"
                 >
                     {isRegister ? 'Register' : 'Sign In'}
@@ -140,6 +145,9 @@ function AuthForm({ token, setToken, isRegister }) {
                     {isRegister ? 'Sign in' : 'Sign up'}
                 </Link>
             </p>
+            {isLoading && (
+                <div className="authLoadingMessage">{isRegister ? 'Registering' : 'Logging in'}...</div>
+            )}
         </div>
     )
 }

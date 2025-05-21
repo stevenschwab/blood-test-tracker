@@ -45,6 +45,10 @@
     @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700;
 }
 
+.inputFormLoadingMessage {
+    @apply text-center text-gray-600;
+}
+
 .inputFormDateColumn {
     @apply mb-4;
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import InputForm from '../InputForm/InputForm';
 import BloodTestResults from '../BloodTestResults/BloodTestResults';
@@ -12,6 +13,28 @@ function Dashboard({ token, setToken, biomarkers }) {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
+    function getTestResults() {
+        setIsLoading(true);
+        axios.get('/api/tests')
+            .then(res => {
+                const results = res.data
+                if (Array.isArray(results)) {
+                    setTestResults(results);
+                    setMessage('Test results loaded successfully');
+                } else {
+                    setMessage(res.message || 'No test results found');
+                    setTestResults([]);
+                }
+                console.log(results);
+                setTestResults(results);
+            })
+            .catch(err => {
+                setMessage(err.message || 'Failed to fetch test results');
+                setTestResults([]);
+            })
+            .finally(setIsLoading(false))
+    };
+
     // Redirect to login if no token
     useEffect(() => {
         if (!token) {
@@ -19,38 +42,7 @@ function Dashboard({ token, setToken, biomarkers }) {
             return;
         }
 
-        // Fetch test results
-        const fetchTestResults = async () => {
-            setIsLoading(true);
-            try {
-              const response = await fetch('/api/tests', {
-                headers: {
-                  'Authorization': `Bearer ${token}`,
-                },
-              });
-      
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-        
-              const data = await response.json();
-      
-              if (Array.isArray(data)) {
-                setTestResults(data);
-                setMessage('Test results loaded successfully');
-              } else {
-                setMessage(data.message || 'No test results found');
-                setTestResults([]);
-              }
-            } catch (error) {
-              setMessage(error.message || 'Failed to fetch test results');
-              setTestResults([]);
-            } finally {
-              setIsLoading(false);
-            }
-        };
-
-        fetchTestResults();
+        getTestResults();
     }, [token, navigate]);
 
     const onError = (err) => {
