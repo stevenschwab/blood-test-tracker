@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './components/HomePage/HomePage.js';
-import AuthForm from './components/AuthForm/AuthForm.js';
-import Dashboard from './components/Dashboard/Dashboard.js';
-import NotFound from './components/NotFound/NotFound.js';
+import HomePage from './components/HomePage/HomePage';
+import AuthForm from './components/AuthForm/AuthForm';
+import Dashboard from './components/Dashboard/Dashboard';
+import NotFound from './components/NotFound/NotFound';
 import biomarkers from './constants/biomarkers';
 import './App.css';
 
@@ -21,12 +21,11 @@ function App() {
 
   // Handle an error
   const handleError = (err) => {
-    console.log(err)
     setMessage(err.message || 'An error occurred');
   };
 
   return (
-    <div className='container mx-auto p-4'>
+    <div className='appContainer'>
       <Routes>
         <Route
           path="/"

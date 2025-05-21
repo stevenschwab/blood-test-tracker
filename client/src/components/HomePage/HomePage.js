@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Footer from '../Footer/Footer.js';
+import Footer from '../Footer/Footer';
 import './HomePage.css';
 
 function HomePage({ token }) {
