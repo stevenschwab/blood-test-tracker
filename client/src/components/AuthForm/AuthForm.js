@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './AuthForm.css';
 
-function AuthForm({ onResponse, onError, token, isRegister = false }) {
+function AuthForm({ token, setToken, isRegister }) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -15,27 +15,39 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
             navigate('/dashboard');
             return;
         }
-    }, [token])
+    }, [token, navigate]);
+
+    const onResponse = (data) => {
+        setMessage(data.message)
+        if (data.token) {
+          setToken(data.token)
+          localStorage.setItem('token', data.token);
+        }
+    };
+
+    const onError = (err) => {
+        setMessage(err.message || 'An error occurred');
+    };
 
     const handleSubmit = (action) => (e) => {
         e.preventDefault()
         if (!username || !password || (isRegister && !email)) {
-            setError('Please fill in all fields');
+            setMessage('Please fill in all fields');
             return;
         }
         if (isRegister && !/\S+@\S+\.\S+/.test(email)) {
-            setError('Please enter a valid email');
+            setMessage('Please enter a valid email');
             return;
         }
         if (username.length < 3) {
-            setError('Username must be at least 3 characters');
+            setMessage('Username must be at least 3 characters');
             return;
         }
         if (password.length < 4) {
-            setError('Password must be at least 6 characters');
+            setMessage('Password must be at least 6 characters');
             return;
         }
-        setError('');
+        setMessage('');
         
         const credentials = {
             username,
@@ -43,7 +55,6 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
             ...(isRegister && { email })
         }
 
-        // Authentication logic
         fetch(`/api/auth/${action}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -60,7 +71,7 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
                 }
             })
             .catch(onError)
-    }
+    };
 
     return (
         <div className="authFormContainer">
@@ -109,8 +120,8 @@ function AuthForm({ onResponse, onError, token, isRegister = false }) {
                         className="inputField"
                     />
                 </div>
-                {error && (
-                    <p className="errorPara">{error}</p>
+                {message && (
+                    <p className="errorPara">{message}</p>
                 )}
                 <button
                     onClick={isRegister ? handleSubmit('register') : handleSubmit('login')}
