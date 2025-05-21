@@ -1,15 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import * as yup from 'yup';
 import initialTestData from '../../constants/initialTestData';
 import './InputForm.css';
+
+const validationErrors = {
+    testDateIncorrect: 'test date must be selected',
+    medicalLabIncorrect: 'medical lab must be selected',
+    physicianIncorrect: 'physician must be selected',
+    fastingIncorrect: 'fasting must be selected',
+    reportIdIncorrect: 'report id must be added',
+    reportStatusIncorrect: 'report status must be selected',
+};
+
+const formSchema = yup.object().shape({
+    test_date: yup
+        .text()
+        .required(validationErrors.testDateIncorrect),
+    medical_lab: yup
+        .number()
+        .required(validationErrors.medicalLabIncorrect),
+    physician_name: yup
+        .number()
+        .required(validationErrors.physicianIncorrect),
+    fasting: yup
+        .number()
+        .oneOf([1, 2], validationErrors.fastingIncorrect)
+        .required(),
+    report_id: yup
+        .number()
+        .required(validationErrors.reportIdIncorrect),
+    report_status: yup
+        .number()
+        .required(validationErrors.reportStatusIncorrect)
+});
+
+const initialErrors = { test_date: '', medical_lab: '', physician_name: '', fasting: '', report_id: '', report_status: '' }
 
 function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, setTestResults, handleMessage, handleError }) {
     const [testData, setTestData] = useState(initialTestData);
     const [isLoading, setIsLoading] = useState(false);
-    const [disabled, setDisabled] = useState(false);
+    const [enabled, setEnabled] = useState(false);
+    const [physicians, setPhysicians] = useState([]);
+    const [medicalLabs, setMedicalLabs] = useState([]);
+    const [errors, setErrors] = useState(initialErrors);
 
-    // Handle input change for biomarkers
-    const handleInputChange = (key, value, section = null) => {
+    const getPhysicians = () => {
+        axios.get('/api/physicians')
+            .then(res => {
+                setPhysicians(res.data)
+            })
+            .catch(handleError)
+    }
+
+    const getMedicalLabs = () => {
+        axios.get('/api/medical_labs')
+            .then(res => {
+                setMedicalLabs(res.data)
+            })
+            .catch(handleError)
+    }
+
+    useEffect(() => {
+        formSchema.isValid(testData).then(isValid => {
+            setEnabled(isValid)
+        })
+    }, [testData])
+
+    useEffect(() => {
+        setIsLoading(true);
+        getPhysicians();
+        getMedicalLabs();
+        setIsLoading(false);
+    }, [])
+
+    const handleInputChange = (key, value, section = null, name = null) => {
         if (section) {
             setTestData({
                 ...testData,
@@ -21,13 +86,18 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
         } else {
             setTestData({
                 ...testData,
-                [key]: value,
+                [name]: value,
             });
         }
+        
+        yup.reach(formSchema, name)
+            .validate(value)
+            .then(() => { setErrors({ ...errors, [name]: ''}) })
+            .catch((error) => { setErrors({ ...errors, [name]: error.errors[0] }) })
     };
 
     const postTestData = (testData) => {
-        setDisabled(true);
+        setEnabled(false);
         setIsLoading(true);
         axios.post('/api/tests', testData)
             .then(res => {
@@ -39,21 +109,18 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
             })
             .catch(handleError)
             .finally(() => {
-                setDisabled(false);
                 setIsLoading(false);
             })
     };
 
-    // Submit data to backend
     const handleSubmit = (e) => {
         e.preventDefault();
 
         /* TODO: Make sure all required fields have data */
-    
+        console.log('Sending data to server...', testData)
         postTestData();
     };
     
-    // Function to format test category name
     const formatCategoryName = (key) => {
         return key
             .replace(/([A-Z])/g, ' $1')
@@ -61,7 +128,6 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
             .trim();
     };
 
-    // Render biomarker input fields
     const renderInputs = (section, items) => {
         <div className="biomarkerInputFieldContainer">
             <h3 className="biomarkerInputHeader">{formatCategoryName(section)}</h3>
@@ -99,6 +165,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
             ) : showForm && (
                     <form onSubmit={handleSubmit}>
                         <div className="inputFormColumn">
+                            {errors.test_date && <span>{errors.test_date}</span>}
                             <label className="inputFormLabel">Test Date</label>
                             <input
                                 type="date"
@@ -110,37 +177,53 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                             />
                         </div>
                         <div className="inputFormColumn">
-                            <label className="inputFormLabel">Medical Lab</label>
-                            <input
-                                type="dropdown"
-                                name="medicalLab"
-                                value={testData.medicalLab}
-                                onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-                                className="inputFormInputField"
-                                required
-                            />
+                            {errors.medical_lab && <span>{errors.medical_lab}</span>}
+                            <label className="inputFormLabel">
+                                Medical Lab <select
+                                            name="medicalLab" 
+                                            className="inputFormInputField" 
+                                            onChange={(e) => handleInputChange(e.target.name, e.target.value)} 
+                                            value={testData.medicalLab}
+                                            required
+                                            >
+                                                <option value="">--select medical lab--</option>
+                                                {medicalLabs.map(({ medical_lab_id, medical_lab_name }) => {
+                                                    return <option value={medical_lab_id}>{medical_lab_name}</option>
+                                                })}
+                                        </select>
+                            </label>
                         </div>
                         <div className="inputFormColumn">
-                            <label className="inputFormLabel">Physician</label>
-                            <input
-                                type="dropdown"
-                                name="physician"
-                                value={testData.physician}
-                                onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-                                className="inputFormInputField"
-                                required
-                            />
+                            {errors.physician_name && <span>{errors.physician_name}</span>}
+                            <label className="inputFormLabel">
+                                Physicians <select
+                                            name="physician" 
+                                            className="inputFormInputField" 
+                                            onChange={(e) => handleInputChange(e.target.name, e.target.value)} 
+                                            value={testData.physician}
+                                            required
+                                            >
+                                                <option value="">--select physician--</option>
+                                                {physicians.map(({ physician_id, physician_name }) => {
+                                                    return <option value={physician_id}>{physician_name}</option>
+                                                })}
+                                        </select>
+                            </label>
                         </div>
                         <div className="inputFormColumn">
-                            <label className="inputFormLabel">Fasting</label>
-                            <input
-                                type="dropdown"
-                                name="fasting"
-                                value={testData.fasting}
-                                onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-                                className="inputFormInputField"
-                                required
-                            />
+                            {errors.fasting && <span>{errors.fasting}</span>}
+                            <label className="inputFormLabel">
+                                Fasting? <select
+                                            name="fasting" 
+                                            className="inputFormInputField" 
+                                            onChange={(e) => handleInputChange(e.target.name, e.target.value)} value={testData.fasting}
+                                            required
+                                            >
+                                                <option value="">--select fasting state--</option>
+                                                <option value="1">Yes</option>
+                                                <option value="2">No</option>
+                                        </select>
+                            </label>
                         </div>
                         <div className="inputFormColumn">
                             <label className="inputFormLabel">Account Number</label>
@@ -253,6 +336,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                             />
                         </div>
                         <div className="inputFormColumn">
+                            {errors.report_id && <span>{errors.report_id}</span>}
                             <label className="inputFormLabel">Report ID</label>
                             <input
                                 type="integer"
@@ -264,6 +348,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                             />
                         </div>
                         <div className="inputFormColumn">
+                            {errors.report_status && <span>{errors.report_status}</span>}
                             <label className="inputFormLabel">Report Status</label>
                             <input
                                 type="dropdown"
@@ -291,7 +376,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                             <button
                                 type="submit"
                                 className="inputFormSaveButton"
-                                disabled={disabled}
+                                disabled={!enabled}
                             >
                                 Save Test
                             </button>
