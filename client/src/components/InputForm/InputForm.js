@@ -1,7 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
+import initialTestData from '../../constants/initialTestData';
 import './InputForm.css';
 
-function InputForm({ handleShowForm, handleInputChange, manualData, showForm, handleSubmit, testDate, handleTestDate, handleManualData, biomarkers }) {
+function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, setTestResults, handleMessage, handleError }) {
+    const [testData, setTestData] = useState(initialTestData);
+
+    // Handle input change for biomarkers
+    const handleInputChange = (key, value, section = null) => {
+        if (section) {
+            setTestData({
+                ...testData,
+                [section]: {
+                    ...testData[section],
+                    [key]: value,
+                }
+            });
+        } else {
+            setTestData({
+                ...testData,
+                [key]: value,
+            });
+        }
+    };
+
+    // Submit data to backend
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (Object.keys(testData).length === 0) {
+          alert("Please enter or upload some data.");
+          return;
+        }
+    
+        fetch('/api/tests', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ ...testData }),
+        })
+          .then(res => res.json())
+          .then(data => {
+            setTestResults([...testData, data]);
+            setTestData(initialTestData);
+            handleShowForm(false);
+            handleMessage('Test data saved successfully');
+          })
+          .catch(handleError)
+    };
+    
     // Function to format test category name
     const formatCategoryName = (key) => {
         return key
@@ -21,7 +68,7 @@ function InputForm({ handleShowForm, handleInputChange, manualData, showForm, ha
                         <input
                             type="number"
                             step="0.1"
-                            value={manualData[section]?.[key] || ""}
+                            value={testData[section]?.[key] || ""}
                             onChange={(e) => handleInputChange(section, key, e.target.value)}
                             className="biomarkerItemInput"
                             placeholder="Enter value"
@@ -49,8 +96,9 @@ function InputForm({ handleShowForm, handleInputChange, manualData, showForm, ha
                         <label className="inputFormDateLabel">Test Date</label>
                         <input
                             type="date"
-                            value={testDate}
-                            onChange={(e) => handleTestDate(e.target.value)}
+                            name="testDate"
+                            value={testData.testDate}
+                            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                             className="inputFormDateInputField"
                             required
                         />
@@ -63,8 +111,7 @@ function InputForm({ handleShowForm, handleInputChange, manualData, showForm, ha
                             type="button"
                             onClick={() => {
                                 handleShowForm(false);
-                                handleManualData({});
-                                handleTestDate('');
+                                setTestData(initialTestData);
                             }}
                             className="inputFormCancelButton"
                         >

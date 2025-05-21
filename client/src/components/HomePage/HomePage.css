@@ -29,7 +29,7 @@
 }
 
 .navigationContainer {
-    @apply hidden md:flex space-x-8;
+    @apply hidden md:flex ml-auto space-x-8;
 }
 
 .navLink {
@@ -37,7 +37,7 @@
 }
 
 .ctaContainer {
-    @apply flex items-center space-x-4;
+    @apply flex items-center space-x-4 ml-8;
 }
 
 .signInLink {

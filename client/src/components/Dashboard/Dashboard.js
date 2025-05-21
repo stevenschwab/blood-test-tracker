@@ -5,25 +5,12 @@ import BloodTestResults from '../BloodTestResults/BloodTestResults';
 import Footer from '../Footer/Footer';
 import './Dashboard.css';
 
-const initialManualData = {
-    completeBloodCount: {},
-    automatedDifferential: {},
-    generalChemistry: {},
-    hepaticFunctionPanel: {},
-    lipidPanel: {},
-    ironAndTIBC: {},
-    thyroidTesting: {},
-    tumorMarkers: {},
-    endocrineEvaluation: {},
-}
-
-function Dashboard({ token, handleToken, handleMessage, message, handleError, biomarkers }) {
-    const navigate = useNavigate();
+function Dashboard({ token, setToken, biomarkers }) {
     const [testResults, setTestResults] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [manualData, setManualData] = useState(initialManualData);
-    const [testDate, setTestDate] = useState('');
+    const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     // Redirect to login if no token
     useEffect(() => {
@@ -50,13 +37,13 @@ function Dashboard({ token, handleToken, handleMessage, message, handleError, bi
       
               if (Array.isArray(data)) {
                 setTestResults(data);
-                handleMessage('Test results loaded successfully');
+                setMessage('Test results loaded successfully');
               } else {
-                handleMessage(data.message || 'No test results found');
+                setMessage(data.message || 'No test results found');
                 setTestResults([]);
               }
             } catch (error) {
-              handleMessage(error.message || 'Failed to fetch test results');
+              setMessage(error.message || 'Failed to fetch test results');
               setTestResults([]);
             } finally {
               setIsLoading(false);
@@ -66,54 +53,18 @@ function Dashboard({ token, handleToken, handleMessage, message, handleError, bi
         fetchTestResults();
     }, [token, navigate]);
 
-    // Handle input change for biomarkers
-    const handleInputChange = (section, key, value) => {
-        setManualData({
-            ...manualData,
-            [section]: {
-                ...manualData[section],
-                [key]: value,
-            }
-        });
-    };
-
-    // Submit data to backend
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (Object.keys(manualData).length === 0) {
-          alert("Please enter or upload some data.");
-          return;
-        }
-    
-        fetch('/api/tests', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ ...manualData, testDate }),
-        })
-          .then(res => res.json())
-          .then(data => {
-            setTestResults([...testResults, data]);
-            setManualData(initialManualData);
-            setTestDate('');
-            setShowForm(false);
-            handleMessage('Test data saved successfully');
-          })
-          .catch(handleError)
+    const onError = (err) => {
+        setMessage(err.message || 'An error occurred');
     };
 
     // Handle logout
     const logout = () => {
         if (token) {
-          handleToken('');
+          setToken('');
           localStorage.removeItem('token');
           setTestResults([]);
-          handleMessage('Logged out successfully');
+          setMessage('Logged out successfully');
           navigate('/login');
-        } else {
-          handleMessage('Log in before logging out');
         }
     };
 
@@ -165,13 +116,13 @@ function Dashboard({ token, handleToken, handleMessage, message, handleError, bi
                 {/* New Blood Test Form */}
                 <InputForm
                     handleShowForm={setShowForm}
-                    handleInputChange={handleInputChange}
                     showForm={showForm}
-                    handleSubmit={handleSubmit}
-                    testDate={testDate}
-                    handleTestDate={setTestDate}
-                    handleManualData={setManualData}
                     biomarkers={biomarkers}
+                    token={token}
+                    testResults={testResults}
+                    setTestResults={setTestResults}
+                    handleMessage={setMessage}
+                    handleError={onError}
                 />
 
                 {/* Historic Test results */}

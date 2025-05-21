@@ -38,6 +38,7 @@ function App() {
           path="/dashboard"
           element={<Dashboard
             token={token}
+            setToken={setToken}
           />}
         />
         <Route
