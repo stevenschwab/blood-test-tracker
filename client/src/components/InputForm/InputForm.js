@@ -4,6 +4,7 @@ import './InputForm.css';
 
 function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, setTestResults, handleMessage, handleError }) {
     const [testData, setTestData] = useState(initialTestData);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Handle input change for biomarkers
     const handleInputChange = (key, value, section = null) => {
@@ -25,7 +26,9 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
 
     // Submit data to backend
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setIsLoading(true);
+
         if (Object.keys(testData).length === 0) {
           alert("Please enter or upload some data.");
           return;
@@ -47,6 +50,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
             handleMessage('Test data saved successfully');
           })
           .catch(handleError)
+          .finally(setIsLoading(false))
     };
     
     // Function to format test category name
@@ -90,42 +94,45 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                     {showForm ? 'Cancel' : 'Enter Manually'}
                 </button>
             </div>
-            {showForm && (
-                <form onSubmit={handleSubmit}>
-                    <div className="inputFormDateColumn">
-                        <label className="inputFormDateLabel">Test Date</label>
-                        <input
-                            type="date"
-                            name="testDate"
-                            value={testData.testDate}
-                            onChange={(e) => handleInputChange(e.target.name, e.target.value)}
-                            className="inputFormDateInputField"
-                            required
-                        />
-                    </div>
-                    {Object.entries(biomarkers).map(([section, items]) => (
-                        <div key={section}>{renderInputs(section, items)}</div>
-                    ))}
-                    <div className="">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                handleShowForm(false);
-                                setTestData(initialTestData);
-                            }}
-                            className="inputFormCancelButton"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="inputFormSaveButton"
-                        >
-                            Save Test
-                        </button>
-                    </div>
-                </form>
-            )}
+            {isLoading ? (
+                <div className="inputFormLoadingMessage">Submitting test results...</div>
+            ) : showForm && (
+                    <form onSubmit={handleSubmit}>
+                        <div className="inputFormDateColumn">
+                            <label className="inputFormDateLabel">Test Date</label>
+                            <input
+                                type="date"
+                                name="testDate"
+                                value={testData.testDate}
+                                onChange={(e) => handleInputChange(e.target.name, e.target.value)}
+                                className="inputFormDateInputField"
+                                required
+                            />
+                        </div>
+                        {Object.entries(biomarkers).map(([section, items]) => (
+                            <div key={section}>{renderInputs(section, items)}</div>
+                        ))}
+                        <div className="">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    handleShowForm(false);
+                                    setTestData(initialTestData);
+                                }}
+                                className="inputFormCancelButton"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="submit"
+                                className="inputFormSaveButton"
+                            >
+                                Save Test
+                            </button>
+                        </div>
+                    </form>
+                )
+            }
         </section>
     )
 }
