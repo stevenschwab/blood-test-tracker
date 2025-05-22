@@ -80,7 +80,7 @@ function AuthForm({ token, setToken, isRegister }) {
 
     return (
         <div className="authFormContainer">
-            <h2 className="authFormHeader">
+            <h2 className="authFormHeader" data-testid="authFormHeader">
                 {isRegister ? 'Register for Biomarker Access' : 'Login to View Biomarkers'}
             </h2>
             <form>

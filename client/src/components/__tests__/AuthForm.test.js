@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import '@testing-library/jest-dom';
 import AuthForm from '../AuthForm/AuthForm';
@@ -35,10 +35,12 @@ describe('AuthForm component', () => {
     it('renders the correct heading when registering', () => {
         render(
             <BrowserRouter>
-              <AuthForm />
+              <AuthForm isRegister={true} />
             </BrowserRouter>
         );
-        // screen.debug
+        const header = screen.getByTestId('authFormHeader');
+        const text = within(header).getByText(/Register for Biomarker Access/i);
+        expect(text).toBeInTheDocument();
     })
     it('renders the correct fields when registering', () => {
         

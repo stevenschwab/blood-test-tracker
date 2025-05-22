@@ -45,6 +45,7 @@ function HomePage({ token }) {
                                 <button
                                     onClick={handleCTAClick}
                                     className="getStartedLink"
+                                    data-testid="get-started-button"
                                 >
                                     Get Started
                                 </button>
