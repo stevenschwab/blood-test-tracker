@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import './AuthForm.css';
 
 function AuthForm({ token, setToken, isRegister }) {
@@ -89,7 +89,7 @@ function AuthForm({ token, setToken, isRegister }) {
                         Username
                     </label>
                     <input
-                        type='type'
+                        type='text'
                         id='username'
                         placeholder='Enter your username'
                         value={username}
@@ -104,7 +104,7 @@ function AuthForm({ token, setToken, isRegister }) {
                             Email
                         </label>
                         <input
-                            type='type'
+                            type='email'
                             id='email'
                             placeholder='Enter your email'
                             value={email}

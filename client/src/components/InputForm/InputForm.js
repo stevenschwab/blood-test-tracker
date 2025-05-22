@@ -15,7 +15,7 @@ const validationErrors = {
 
 const formSchema = yup.object().shape({
     test_date: yup
-        .text()
+        .string()
         .required(validationErrors.testDateIncorrect),
     medical_lab: yup
         .number()

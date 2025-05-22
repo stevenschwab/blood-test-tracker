@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import { Routes, Route } from 'react-router';
 import HomePage from './components/HomePage/HomePage';
 import AuthForm from './components/AuthForm/AuthForm';
 import Dashboard from './components/Dashboard/Dashboard';

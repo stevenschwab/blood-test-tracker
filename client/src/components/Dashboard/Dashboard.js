@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import InputForm from '../InputForm/InputForm';
 import BloodTestResults from '../BloodTestResults/BloodTestResults';
 import Footer from '../Footer/Footer';

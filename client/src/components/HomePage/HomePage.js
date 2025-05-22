@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import Footer from '../Footer/Footer';
 import './HomePage.css';
 
@@ -19,7 +19,7 @@ function HomePage({ token }) {
                         {/* Logo */}
                         <div className="logoContainer">
                             <Link to="/">
-                                <h1 className="logoH1">NexuHealth</h1>
+                                <h1 className="logoH1" data-testid="logoH1">NexuHealth</h1>
                             </Link>
                         </div>
                         {/* Navigation Links */}
