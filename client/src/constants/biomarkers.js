@@ -9,7 +9,7 @@ const biomarkers = {
       { name: "MCH", key: "mch", range: [26.6, 33.0], unit: "pg", info: "Mean corpuscular hemoglobin measures hemoglobin in red blood cells." },
       { name: "MCHC", key: "mchc", range: [31.5, 35.7], unit: "g/dL", info: "Mean corpuscular hemoglobin concentration. Helps diagnose anemia." },
       { name: "RDW", key: "rdw", range: [11.6, 15.4], unit: "%", info: "Red cell distribution width measures variation in red blood cell size." },
-      { name: "Platelet Count", key: "plc", range: [140, 400], unit: "k/ul", info: "Measures the number of platelets (small cell fragments that help with blood clotting to stop bleeding) in your blood"},
+      { name: "Platelet Count", key: "plc", range: [140, 400], unit: "K/ul", info: "Measures the number of platelets (small cell fragments that help with blood clotting to stop bleeding) in your blood"},
       { name: "MPV", key: "mpv", range: [7.5, 11.6], unit: "fl", info: "Mean platelet volume measures the average size of platelets"}
     ],
     automatedDifferential: [
