@@ -1,5 +1,5 @@
 // Reference ranges and biomarker information
-const biomarkers = {
+export const biomarkers = {
     completeBloodCount: [
       { name: "White Blood Cell", key: "wbc", range: [3.4, 10.8], unit: "K/uL", info: "Measures immune system cells fighting infection. Abnormal levels may indicate infection or immune disorders." },
       { name: "Red Blood Cell", key: "rbc", range: [4.14, 5.8], unit: "M/uL", info: "Carries oxygen in the blood. Low levels may indicate anemia; high levels may suggest dehydration." },
@@ -80,5 +80,3 @@ const biomarkers = {
       { name: "Testosterone, Free", key: "testosteroneFree", range: [4.3, 24.0], unit: "ng/dL", info: "Unbound testosterone. Affects male characteristics." },
     ],
 };
-
-export default biomarkers;
