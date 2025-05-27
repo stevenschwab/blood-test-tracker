@@ -3,9 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  
-
-    return knex.schema
+  return knex.schema
     .createTable('blood_test_results', blood_test_results => {
         blood_test_results.increments('id').primary()
         blood_test_results.integer('chart_id')
@@ -22,6 +20,13 @@ exports.up = function(knex) {
             .onUpdate('RESTRICT')
             .onDelete('RESTRICT')
         blood_test_results.decimal(10, 2)('value')
+        blood_test_results.integer('lab_id')
+            .unsigned()
+            .nullable()
+            .references('medical_lab_id')
+            .inTable('medical_laboratories')
+            .onUpdate('RESTRICT')
+            .onDelete('RESTRICT')
     })
 };
 
@@ -31,5 +36,5 @@ exports.up = function(knex) {
  */
 exports.down = function(knex) {
   return knex.schema
-    .dropTableIfExists('charts')
+    .dropTableIfExists('blood_test_results')
 };
