@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router';
 import InputForm from '../InputForm/InputForm';
@@ -7,6 +9,7 @@ import Footer from '../Footer/Footer';
 import './Dashboard.css';
 
 function Dashboard({ token, setToken, biomarkers }) {
+    const { user } = useContext(AuthContext);
     const [testResults, setTestResults] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -98,6 +101,7 @@ function Dashboard({ token, setToken, biomarkers }) {
 
             {/* Main Content (Article Section) */}
             <main className="mainContentContainer">
+                <h1>Welcome, {user ? user.name : 'Guest'} </h1>
                 <h2 className="mainContentHeader">Your NexuHealth Dashboard</h2>
                 {message && (
                     <div className={`mainContentSuccessMessagePrefix ${message.includes('successfully') ? 'mainContentSuccess' : 'mainContentError'}`}>

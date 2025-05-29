@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router';
 import './AuthForm.css';
 
 function AuthForm({ token, setToken, isRegister }) {
+    const { setUser } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,6 +31,7 @@ function AuthForm({ token, setToken, isRegister }) {
         if (data.token) {
           setToken(data.token)
           localStorage.setItem('token', data.token);
+          setUser(data.user)
           setUsername('');
           setPassword('');
           if (isRegister) setEmail('');
