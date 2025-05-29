@@ -6,13 +6,13 @@ const jwt = require('jsonwebtoken');
 const Users = require('../users/users-model');
 
 router.post("/register", validateRoleName, (req, res, next) => {
-  let { username, password, role_name } = req.body
+  let { username, password, role_name, email } = req.body
   
   const hash = bcrypt.hashSync(password, BCRYPT_ROUNDS)
   password = hash
   role_name = req.role_name
 
-  Users.add({ username, password, role_name })
+  Users.add({ username, password, role_name, email })
     .then(saved => {
       res.status(201).json(saved)
     })
