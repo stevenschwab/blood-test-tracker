@@ -10,6 +10,17 @@ router.get("/", restricted, (req, res, next) => {
     .catch(next);
 });
 
+router.get("/user", restricted, (req, res, next) => {
+  Users.findById(req.decodedJwt.user_id)
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.json(user);
+    })
+    .catch(next);
+});
+
 router.get("/:user_id", restricted, only('admin'), (req, res, next) => {
   Users.findById(req.params.user_id)
     .then(user => {

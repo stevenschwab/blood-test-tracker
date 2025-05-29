@@ -9,7 +9,7 @@ import Footer from '../Footer/Footer';
 import './Dashboard.css';
 
 function Dashboard({ token, setToken, biomarkers }) {
-    const { user } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext);
     const [testResults, setTestResults] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +63,10 @@ function Dashboard({ token, setToken, biomarkers }) {
         }
     };
 
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="dashboardContainer">
             {/* Navigation Header */}
@@ -101,7 +105,7 @@ function Dashboard({ token, setToken, biomarkers }) {
 
             {/* Main Content (Article Section) */}
             <main className="mainContentContainer">
-                <h1>Welcome, {user ? user.name : 'Guest'} </h1>
+                <h1>Welcome, {user && `${user.first_name} ${user.last_name}`} </h1>
                 <h2 className="mainContentHeader">Your NexuHealth Dashboard</h2>
                 {message && (
                     <div className={`mainContentSuccessMessagePrefix ${message.includes('successfully') ? 'mainContentSuccess' : 'mainContentError'}`}>

@@ -1,20 +1,35 @@
 import { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
                 if (token) {
-                    const response = await 
+                    const response = await axios.get('/api/users/user', {
+                        headers: { Authorization: `Bearer ${token}` },
+                    })
+                    setUser(response.data);
                 }
             } catch (error) {
-                console.error('Error fetching user:', error);
+                console.error('Error fetching user:', error.response?.data || error.messsage);
+                setUser(null);
+            } finally {
+                setLoading(false);
             }
-        }
-    })
+        };
+        fetchUser()
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{ user, setUser }}>
+            {children}
+        </AuthContext.Provider>
+    )
 }

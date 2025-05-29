@@ -26,12 +26,15 @@ function AuthForm({ token, setToken, isRegister }) {
         setMessage(err.message || 'An error occurred');
     };
 
-    const onResponse = (data) => {
+    const onResponse = async (data) => {
         setMessage(data.message)
         if (data.token) {
           setToken(data.token)
           localStorage.setItem('token', data.token);
-          setUser(data.user)
+          const userResponse = await axios.get('/api/users/user', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setUser(userResponse.data);
           setUsername('');
           setPassword('');
           if (isRegister) setEmail('');
