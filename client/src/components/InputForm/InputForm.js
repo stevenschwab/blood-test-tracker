@@ -69,8 +69,8 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
 
     useEffect(() => {
         setIsLoading(true);
-        getPhysicians();
-        getMedicalLabs();
+        //getPhysicians();
+        //getMedicalLabs();
         setIsLoading(false);
     }, [])
 

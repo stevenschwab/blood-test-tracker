@@ -1,10 +1,12 @@
 const db = require('../../data/db-config.js');
 
 async function getAllTestsByUserId(user_id) {
-    return await db('blood_test_results as btr')
+    return await db('charts as c')
+        .join('blood_test_results as btr', 'c.chart_id', 'btr.chart_id')
         .join('biomarkers as b', 'btr.biomarker_id', 'b.biomarker_id')
-        .select('*')
-        .where('btr.user_id', user_id)
+        .join('biomarker_categories as bc', 'b.biomarker_category_id', 'bc.category_id')
+        .select('b.biomarker_blood_key', 'btr.value', 'btr.lab_id')
+        .where('c.user_id', user_id)
 }
 
 async function getByTestId(test_id) {

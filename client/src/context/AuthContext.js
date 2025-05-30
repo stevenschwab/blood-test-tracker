@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [biomarkers, setBiomarkers] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -24,11 +25,31 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
         };
-        fetchUser()
+
+        const initializeAuth = async () => {
+            const cachedUser = sessionStorage.getItem('user');
+            const cachedBiomarkers = sessionStorage.getItem('biomarkers');
+
+            if (cachedUser && cachedBiomarkers) {
+                setUser(JSON.parse(cachedUser));
+                setBiomarkers(JSON.parse(cachedBiomarkers));
+                setLoading(false);
+            } else {
+                fetchUser()
+            }
+        }
+        
+        initializeAuth();
     }, []);
 
     return (
-        <AuthContext.Provider value={{ user, setUser }}>
+        <AuthContext.Provider 
+            value={{ 
+                user, 
+                setUser, 
+                biomarkers, 
+                setBiomarkers
+            }}>
             {children}
         </AuthContext.Provider>
     )

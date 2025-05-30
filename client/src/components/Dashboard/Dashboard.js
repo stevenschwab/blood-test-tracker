@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router';
@@ -8,8 +7,8 @@ import BloodTestResults from '../BloodTestResults/BloodTestResults';
 import Footer from '../Footer/Footer';
 import './Dashboard.css';
 
-function Dashboard({ token, setToken, biomarkers }) {
-    const { user, loading } = useContext(AuthContext);
+function Dashboard({ token, setToken }) {
+    const { user, setUser, setBiomarkers, biomarkers, loading } = useContext(AuthContext);
     const [testResults, setTestResults] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,10 +16,13 @@ function Dashboard({ token, setToken, biomarkers }) {
     const navigate = useNavigate();
 
     function getTestResults() {
+        console.log('getting test results')
         setIsLoading(true);
-        axios.get('/api/tests')
+        axios.get('/api/tests', {
+            headers: { Authorization: `Bearer ${token}` }
+        })
             .then(res => {
-                const results = res.data
+                const results = res.data;
                 if (Array.isArray(results)) {
                     setTestResults(results);
                     setMessage('Test results loaded successfully');
@@ -28,8 +30,6 @@ function Dashboard({ token, setToken, biomarkers }) {
                     setMessage(res.message || 'No test results found');
                     setTestResults([]);
                 }
-                console.log(results);
-                setTestResults(results);
             })
             .catch(err => {
                 setMessage(err.message || 'Failed to fetch test results');
@@ -56,7 +56,12 @@ function Dashboard({ token, setToken, biomarkers }) {
     const logout = () => {
         if (token) {
           setToken('');
+          setUser(null);
+          setBiomarkers(null);
           localStorage.removeItem('token');
+          sessionStorage.removeItem('user');
+          sessionStorage.removeItem('token');
+          sessionStorage.removeItem('biomarkers');
           setTestResults([]);
           setMessage('Logged out successfully');
           navigate('/login');
@@ -105,7 +110,7 @@ function Dashboard({ token, setToken, biomarkers }) {
 
             {/* Main Content (Article Section) */}
             <main className="mainContentContainer">
-                <h1>Welcome, {user && `${user.first_name} ${user.last_name}`} </h1>
+                <h1>Welcome, {user ? `${user.first_name} ${user.last_name}` : 'User'} </h1>
                 <h2 className="mainContentHeader">Your NexuHealth Dashboard</h2>
                 {message && (
                     <div className={`mainContentSuccessMessagePrefix ${message.includes('successfully') ? 'mainContentSuccess' : 'mainContentError'}`}>
@@ -117,12 +122,12 @@ function Dashboard({ token, setToken, biomarkers }) {
                 <InputForm
                     handleShowForm={setShowForm}
                     showForm={showForm}
-                    biomarkers={biomarkers}
                     token={token}
                     testResults={testResults}
                     setTestResults={setTestResults}
                     handleMessage={setMessage}
                     handleError={onError}
+                    biomarkers={biomarkers}
                 />
 
                 {/* Historic Test results */}

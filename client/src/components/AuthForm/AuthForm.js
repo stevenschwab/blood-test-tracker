@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router';
 import './AuthForm.css';
 
 function AuthForm({ token, setToken, isRegister }) {
-    const { setUser } = useContext(AuthContext);
+    const { setUser, setBiomarkers } = useContext(AuthContext);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -32,9 +32,17 @@ function AuthForm({ token, setToken, isRegister }) {
           setToken(data.token)
           localStorage.setItem('token', data.token);
           const userResponse = await axios.get('/api/users/user', {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${data.token}` },
           });
           setUser(userResponse.data);
+          sessionStorage.setItem('user', JSON.stringify(userResponse.data))
+          sessionStorage.setItem('token', data.token)
+          const biomarkerResponse = await axios.get('/api/biomarkers', {
+            headers: { Authorization: `Bearer ${data.token}` },
+          });
+          const biomarkerData = biomarkerResponse.data;
+          setBiomarkers(biomarkerData);
+          sessionStorage.setItem('biomarkers', JSON.stringify(biomarkerData))
           setUsername('');
           setPassword('');
           if (isRegister) setEmail('');

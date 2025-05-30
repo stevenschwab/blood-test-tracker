@@ -14,7 +14,7 @@ router.get('/', restricted, (req, res, next) => {
             if (data.length) {
                 res.json(data);
             } else {
-                res.json({ message: "No test results found" })
+                res.status(404).json({ message: "No test results found" })
             }
         })
         .catch(next);
