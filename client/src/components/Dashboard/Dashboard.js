@@ -52,7 +52,7 @@ function Dashboard({ token, setToken }) {
     };
 
     // Handle logout
-    const logout = () => {
+    const handleLogout = () => {
         if (token) {
           setToken('');
           setUser(null);
@@ -67,7 +67,11 @@ function Dashboard({ token, setToken }) {
         }
     };
 
-    if (loading) {
+    const handleCloseMessage = () => {
+        setMessage('');
+    }
+
+    if (loading || isLoading) {
         return <div>Loading...</div>;
     }
 
@@ -85,7 +89,7 @@ function Dashboard({ token, setToken }) {
                         <div className="logoutButtonContainer">
                             {token && (
                                 <button
-                                    onClick={logout}
+                                    onClick={handleLogout}
                                     className="logoutButton"
                                 >
                                     Log out
@@ -112,8 +116,11 @@ function Dashboard({ token, setToken }) {
                 <h1>Welcome, {user ? `${user.first_name} ${user.last_name}` : 'User'} </h1>
                 <h2 className="mainContentHeader">Your NexuHealth Dashboard</h2>
                 {message && (
-                    <div className={`mainContentSuccessMessagePrefix ${message.includes('successfully') ? 'mainContentSuccess' : 'mainContentError'}`}>
-                        {message}
+                    <div className={`mainContentMessagePrefix ${message.includes('successfully') ? 'mainContentSuccessMessage' : 'mainContentErrorMessage'}`} role="alert">
+                        <span>{message}</span>
+                        <button className="messageCloseButton" onClick={handleCloseMessage} aria-label="Close message">
+                            x
+                        </button>
                     </div>
                 )}
 
@@ -134,7 +141,7 @@ function Dashboard({ token, setToken }) {
                     <h3 className="historyContainerHeader">Your Test History</h3>
                     {isLoading ? (
                         <div className="historyMessage">Loading test results...</div>
-                    ) : testResults.length > 0 && Object.keys(biomarkers).length > 0 ? (
+                    ) : testResults.length > 0 && biomarkers ? (
                         <BloodTestResults results={testResults} biomarkers={biomarkers} />
                     ) : (
                         <div className="historyMessage">No test results found. Add a new test above.</div>
