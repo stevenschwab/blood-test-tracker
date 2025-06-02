@@ -5,24 +5,28 @@ import './BloodTestResults.css';
 
 // Function to determine flag (High, Low, Normal)
 const getFlag = (value, minRange, maxRange) => {
-    if (!value) return '';
-    if (maxRange === undefined) {
+    if (value === 'N/A') {
+        return '';
+    } else if (maxRange === null) {
         if (value < minRange) return 'Low';
         return 'Normal';
-    }
-    if (minRange === undefined) {
+    } else if (minRange === null) {
         if (value > maxRange) return 'High';
         return 'Normal';
+    } else if (value < minRange) {
+        return 'Low';
+    } else if (value > maxRange) {
+        return 'High';
+    } else {
+        return 'Normal';
     }
-    if (value < minRange) return 'Low';
-    if (value > maxRange) return 'High';
-    return 'Normal';
 };
 
 // Function to format reference interval
 const formatReferenceInterval = (minRange, maxRange) => {
-    if ((minRange === undefined && maxRange === undefined)) return 'N/A';
-    if (maxRange === undefined) return `> ${minRange}`;
+    if ((minRange === null && maxRange === null)) return 'N/A';
+    if (maxRange === null) return `> ${minRange}`;
+    if (minRange === null) return `< ${maxRange}`;
     return `${minRange} - ${maxRange}`;
 }
 
@@ -68,7 +72,9 @@ function BloodTestResults({ results, biomarkers }) {
                                         <tr key={biomarker.biomarker_blood_key}>
                                             <td className='table-cell'>{biomarker.biomarker_name}</td>
                                             <td className='table-cell'>{blood_value}</td>
-                                            <td className='table-cell'>{flag}</td>
+                                            <td className={`table-cell ${flag === 'Low' || flag === 'High' ? 'table-cell--red' : ''}`}>
+                                                {flag}
+                                            </td>
                                             <td className='table-cell'>{formatReferenceInterval(biomarker.biomarker_min_range, biomarker.biomarker_max_range)}</td>
                                             <td className='table-cell'>{biomarker.units}</td>
                                             <td className='table-cell table-cell--info'>

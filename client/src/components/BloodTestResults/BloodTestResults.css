@@ -49,6 +49,11 @@
     padding: 8px;
 }
 
+.table-cell--red {
+    color: red;
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
 /* Info cell (for relative positioning) */
 .table-cell--info {
     position: relative;
