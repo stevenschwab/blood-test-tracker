@@ -140,6 +140,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                             onChange={(e) => handleInputChange(section, key, e.target.value)}
                             className="biomarkerItemInput"
                             placeholder="Enter value"
+                            autoComplete="off"
                         />
                     </div>
                 ))}
@@ -172,6 +173,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -232,6 +234,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -243,6 +246,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -254,6 +258,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -265,6 +270,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -276,6 +282,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -287,6 +294,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -298,6 +306,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -309,6 +318,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -320,6 +330,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -331,6 +342,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -343,6 +355,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         <div className="inputFormColumn">
@@ -355,6 +368,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                                 onChange={(e) => handleInputChange(e.target.name, e.target.value)}
                                 className="inputFormInputField"
                                 required
+                                autoComplete="off"
                             />
                         </div>
                         {Object.entries(biomarkers).map(([section, items]) => (
