@@ -48,7 +48,8 @@ export const AuthProvider = ({ children }) => {
                 user, 
                 setUser, 
                 biomarkers, 
-                setBiomarkers
+                setBiomarkers,
+                loading
             }}>
             {children}
         </AuthContext.Provider>

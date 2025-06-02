@@ -16,7 +16,6 @@ function Dashboard({ token, setToken }) {
     const navigate = useNavigate();
 
     function getTestResults() {
-        console.log('getting test results')
         setIsLoading(true);
         axios.get('/api/tests', {
             headers: { Authorization: `Bearer ${token}` }
@@ -32,7 +31,7 @@ function Dashboard({ token, setToken }) {
                 }
             })
             .catch(err => {
-                setMessage(err.message || 'Failed to fetch test results');
+                setMessage(err.response?.data.message || 'Failed to fetch test results');
                 setTestResults([]);
             })
             .finally(setIsLoading(false))
