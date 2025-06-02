@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [biomarkers, setBiomarkers] = useState(null);
+    const [biomarkers, setBiomarkers] = useState({});
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

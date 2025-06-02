@@ -34,7 +34,7 @@ function Dashboard({ token, setToken }) {
                 setMessage(err.response?.data.message || 'Failed to fetch test results');
                 setTestResults([]);
             })
-            .finally(setIsLoading(false))
+            .finally(() => setIsLoading(false));
     };
 
     // Redirect to login if no token
@@ -56,7 +56,7 @@ function Dashboard({ token, setToken }) {
         if (token) {
           setToken('');
           setUser(null);
-          setBiomarkers(null);
+          setBiomarkers({});
           localStorage.removeItem('token');
           sessionStorage.removeItem('user');
           sessionStorage.removeItem('token');
@@ -134,7 +134,7 @@ function Dashboard({ token, setToken }) {
                     <h3 className="historyContainerHeader">Your Test History</h3>
                     {isLoading ? (
                         <div className="historyMessage">Loading test results...</div>
-                    ) : testResults.length > 0 ? (
+                    ) : testResults.length > 0 && Object.keys(biomarkers).length > 0 ? (
                         <BloodTestResults results={testResults} biomarkers={biomarkers} />
                     ) : (
                         <div className="historyMessage">No test results found. Add a new test above.</div>

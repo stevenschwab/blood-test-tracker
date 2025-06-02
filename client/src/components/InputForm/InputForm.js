@@ -108,9 +108,7 @@ function InputForm({ showForm, handleShowForm, biomarkers, token, testResults, s
                 handleMessage('Test data saved successfully');
             })
             .catch(handleError)
-            .finally(() => {
-                setIsLoading(false);
-            })
+            .finally(() => setIsLoading(false));
     };
 
     const handleSubmit = (e) => {
