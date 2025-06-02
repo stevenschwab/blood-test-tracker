@@ -12,7 +12,8 @@ function Dashboard({ token, setToken }) {
     const [testResults, setTestResults] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState({ text: '', type: '' });
+    const [isClosing, setIsClosing] = useState(false);
     const navigate = useNavigate();
 
     function getTestResults() {
@@ -24,14 +25,14 @@ function Dashboard({ token, setToken }) {
                 const results = res.data;
                 if (Array.isArray(results)) {
                     setTestResults(results);
-                    setMessage('Test results loaded successfully');
+                    setMessage({ text: 'Test results loaded successfully', type: 'success' });
                 } else {
-                    setMessage(res.message || 'No test results found');
+                    setMessage({ text: res.message || 'No test results found', type: 'error' });
                     setTestResults([]);
                 }
             })
             .catch(err => {
-                setMessage(err.response?.data.message || 'Failed to fetch test results');
+                setMessage({ text: err.response?.data.message || 'Failed to fetch test results', type: 'error' });
                 setTestResults([]);
             })
             .finally(() => setIsLoading(false));
@@ -48,7 +49,7 @@ function Dashboard({ token, setToken }) {
     }, [token, navigate]);
 
     const onError = (err) => {
-        setMessage(err.message || 'An error occurred');
+        setMessage({ text: err.message || 'An error occurred', type: 'error' });
     };
 
     // Handle logout
@@ -62,13 +63,17 @@ function Dashboard({ token, setToken }) {
           sessionStorage.removeItem('token');
           sessionStorage.removeItem('biomarkers');
           setTestResults([]);
-          setMessage('Logged out successfully');
+          setMessage({ text: 'Logged out successfully', type: 'success' });
           navigate('/login');
         }
     };
 
     const handleCloseMessage = () => {
-        setMessage('');
+        setIsClosing(true);
+        setTimeout(() => {
+            setMessage({ text: '', type: '' });
+            setIsClosing(false);
+        }, 300);
     }
 
     if (loading || isLoading) {
@@ -115,9 +120,9 @@ function Dashboard({ token, setToken }) {
             <main className="mainContentContainer">
                 <h1>Welcome, {user ? `${user.first_name} ${user.last_name}` : 'User'} </h1>
                 <h2 className="mainContentHeader">Your NexuHealth Dashboard</h2>
-                {message && (
-                    <div className={`mainContentMessagePrefix ${message.includes('successfully') ? 'mainContentSuccessMessage' : 'mainContentErrorMessage'}`} role="alert">
-                        <span>{message}</span>
+                {message.text && (
+                    <div className={`mainContentMessagePrefix ${isClosing ? 'opacity-0' : 'opacity-100'} ${message.type === 'success' ? 'mainContentSuccessMessage' : 'mainContentErrorMessage'}`} role="alert">
+                        <span>{message.text}</span>
                         <button className="messageCloseButton" onClick={handleCloseMessage} aria-label="Close message">
                             x
                         </button>

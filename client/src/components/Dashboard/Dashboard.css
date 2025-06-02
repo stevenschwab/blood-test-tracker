@@ -54,7 +54,7 @@
 }
 
 .mainContentMessagePrefix {
-    @apply flex justify-between items-center px-4 py-2 my-2 rounded;
+    @apply flex justify-between items-center px-4 py-2 my-2 rounded transition-opacity duration-300;
 }
 
 .mainContentSuccessMessage {
